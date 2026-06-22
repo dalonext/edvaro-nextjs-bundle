@@ -1,0 +1,1475 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eadvro Dashboard — Documentation</title>
+    <style>
+      :root {
+        --brand: #7b48ff;
+        --brand-dim: rgba(123, 72, 255, 0.12);
+        --dark: #050505;
+        --card: #140f20;
+        --card2: #1a1a1a;
+        --border: #3b3b3b;
+        --text: #e3e8ef;
+        --muted: #8b8b8b;
+        --green: #00d261;
+        --red: #ef4444;
+        --blue: #7b48ff;
+        --yellow: #fac515;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: var(--dark);
+        color: var(--text);
+        line-height: 1.75;
+      }
+
+      /* ── Layout ── */
+      .wrap {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* ── Sidebar ── */
+      .sidebar {
+        width: 256px;
+        flex-shrink: 0;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        background: var(--card);
+        border-right: 1px solid var(--border);
+        padding: 28px 16px 40px;
+        scrollbar-width: thin;
+        scrollbar-color: var(--border) transparent;
+      }
+      .sb-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 8px;
+        margin-bottom: 32px;
+      }
+      .sb-brand svg {
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+      }
+      .sb-brand-name {
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--brand);
+      }
+      .sb-brand-ver {
+        font-size: 10px;
+        color: var(--muted);
+        margin-top: 1px;
+      }
+
+      .sb-section {
+        margin-bottom: 20px;
+      }
+      .sb-section-label {
+        font-size: 9.5px;
+        font-weight: 700;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+        color: var(--muted);
+        padding: 0 10px;
+        margin-bottom: 6px;
+      }
+      .sb-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 10px;
+        border-radius: 7px;
+        font-size: 13px;
+        color: var(--muted);
+        text-decoration: none;
+        transition:
+          background 130ms,
+          color 130ms;
+        line-height: 1.3;
+      }
+      .sb-link:hover {
+        background: var(--brand-dim);
+        color: var(--brand);
+      }
+      .sb-link .num {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--border);
+        width: 16px;
+        flex-shrink: 0;
+      }
+
+      /* ── Main ── */
+      .main {
+        flex: 1;
+        max-width: 820px;
+        padding: 56px 52px 80px;
+      }
+
+      /* ── Hero ── */
+      .hero {
+        background: linear-gradient(135deg, #1a1008 0%, #0d0d0d 60%);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 40px 40px 36px;
+        margin-bottom: 56px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -40px;
+        right: -40px;
+        width: 180px;
+        height: 180px;
+        background: radial-gradient(
+          circle,
+          rgba(253, 105, 49, 0.15) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .hero-tag {
+        display: inline-block;
+        background: var(--brand-dim);
+        color: var(--brand);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 4px 10px;
+        border-radius: 100px;
+        margin-bottom: 14px;
+      }
+      .hero h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 10px;
+        letter-spacing: -0.5px;
+      }
+      .hero-desc {
+        color: var(--muted);
+        font-size: 1rem;
+        margin-bottom: 20px;
+        max-width: 520px;
+      }
+      .hero-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .hbadge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 12px;
+        border-radius: 100px;
+        font-size: 12px;
+        font-weight: 600;
+        border: 1px solid var(--border);
+        color: var(--muted);
+        background: var(--card2);
+      }
+      .hbadge span {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--brand);
+      }
+
+      /* ── Sections ── */
+      section {
+        margin-bottom: 64px;
+        scroll-margin-top: 24px;
+      }
+
+      h2 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      h2 .section-num {
+        background: var(--brand-dim);
+        color: var(--brand);
+        font-size: 11px;
+        font-weight: 800;
+        padding: 3px 8px;
+        border-radius: 5px;
+      }
+      h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text);
+        margin: 24px 0 10px;
+      }
+      p {
+        color: var(--muted);
+        margin-bottom: 14px;
+        font-size: 0.93rem;
+      }
+      ul,
+      ol {
+        color: var(--muted);
+        padding-left: 20px;
+        margin-bottom: 14px;
+        font-size: 0.93rem;
+      }
+      li {
+        margin-bottom: 6px;
+      }
+      a {
+        color: var(--brand);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      strong {
+        color: var(--text);
+      }
+
+      /* ── Code ── */
+      pre {
+        background: #0a0a0a;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 18px 20px;
+        overflow-x: auto;
+        margin: 12px 0 20px;
+        font-family: "Consolas", "Fira Code", monospace;
+        font-size: 0.84rem;
+        line-height: 1.65;
+        color: #c9d1d9;
+      }
+      code {
+        font-family: "Consolas", "Fira Code", monospace;
+        color: var(--brand);
+        font-size: 0.87em;
+        background: rgba(253, 105, 49, 0.08);
+        padding: 1px 5px;
+        border-radius: 4px;
+      }
+      pre code {
+        background: none;
+        padding: 0;
+        font-size: inherit;
+        color: inherit;
+      }
+      .kw {
+        color: #ff7b72;
+      }
+      .str {
+        color: #a5d6ff;
+      }
+      .cm {
+        color: #555;
+        font-style: italic;
+      }
+      .fn {
+        color: #d2a8ff;
+      }
+
+      /* ── Tables ── */
+      .table-wrap {
+        overflow-x: auto;
+        margin: 12px 0 20px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--card);
+      }
+      th {
+        text-align: left;
+        padding: 12px 16px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: var(--brand);
+        background: rgba(253, 105, 49, 0.06);
+        border-bottom: 1px solid var(--border);
+      }
+      td {
+        padding: 11px 16px;
+        font-size: 0.88rem;
+        color: var(--muted);
+        border-bottom: 1px solid var(--border);
+        vertical-align: top;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      td code {
+        font-size: 0.82rem;
+      }
+
+      /* ── Info / Warning boxes ── */
+      .box {
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin: 14px 0;
+        font-size: 0.91rem;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+      }
+      .box-icon {
+        font-size: 16px;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .box p {
+        margin: 0;
+      }
+      .box-info {
+        background: rgba(74, 158, 255, 0.08);
+        border: 1px solid rgba(74, 158, 255, 0.2);
+        color: #7ab8f5;
+      }
+      .box-warn {
+        background: rgba(250, 197, 21, 0.08);
+        border: 1px solid rgba(250, 197, 21, 0.2);
+        color: #e3b341;
+      }
+      .box-success {
+        background: rgba(0, 210, 97, 0.08);
+        border: 1px solid rgba(0, 210, 97, 0.2);
+        color: #3fb950;
+      }
+      .box-tip {
+        background: var(--brand-dim);
+        border: 1px solid rgba(253, 105, 49, 0.25);
+        color: #e8864a;
+      }
+
+      /* ── Steps ── */
+      .steps {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        margin: 16px 0;
+      }
+      .step {
+        display: flex;
+        gap: 16px;
+        padding-bottom: 24px;
+        position: relative;
+      }
+      .step:not(:last-child)::before {
+        content: "";
+        position: absolute;
+        left: 15px;
+        top: 32px;
+        bottom: 0;
+        width: 1px;
+        background: var(--border);
+      }
+      .step-num {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--brand-dim);
+        border: 1px solid rgba(253, 105, 49, 0.3);
+        color: var(--brand);
+        font-size: 13px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+      .step-body h4 {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 6px;
+      }
+      .step-body p {
+        margin: 0;
+        font-size: 0.88rem;
+      }
+
+      /* ── File tree ── */
+      .tree {
+        background: #0a0a0a;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 20px;
+        font-family: "Consolas", monospace;
+        font-size: 0.83rem;
+        line-height: 1.8;
+        color: #8a8f98;
+        margin: 12px 0 20px;
+      }
+      .tree .folder {
+        color: #e1ad0f;
+      }
+      .tree .important {
+        color: var(--brand);
+      }
+      .tree .comment {
+        color: #444;
+      }
+
+      /* ── Script cards ── */
+      .script-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 12px 0 20px;
+      }
+      .script-card {
+        background: var(--card2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px 16px;
+      }
+      .sc-name {
+        font-family: monospace;
+        font-size: 13px;
+        color: var(--brand);
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+      .sc-desc {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      /* ── Badges ── */
+      .badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .badge-orange {
+        background: var(--brand-dim);
+        color: var(--brand);
+      }
+      .badge-green {
+        background: rgba(0, 210, 97, 0.12);
+        color: var(--green);
+      }
+      .badge-blue {
+        background: rgba(74, 158, 255, 0.12);
+        color: var(--blue);
+      }
+
+      /* ── Responsive ── */
+      @media (max-width: 900px) {
+        .sidebar {
+          display: none;
+        }
+        .main {
+          padding: 28px 20px 60px;
+        }
+        .script-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sb-brand">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="80" height="80">
+  <image width="30" height="30" xlink:href="data:image/png;base64,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"/>
+</svg>
+          <div>
+            <div class="sb-brand-name">Eadvro</div>
+        <div class="sb-section">
+          <div class="sb-section-label">Getting Started</div>
+          <a class="sb-link" href="#overview"
+            ><span class="num">01</span> Overview</a
+          >
+          <a class="sb-link" href="#requirements"
+            ><span class="num">02</span> Requirements</a
+          >
+          <a class="sb-link" href="#installation"
+            ><span class="num">03</span> Installation</a
+          >
+          <a class="sb-link" href="#running"
+            ><span class="num">04</span> Running the Project</a
+          >
+        </div>
+
+        <div class="sb-section">
+          <div class="sb-section-label">Project Structure</div>
+          <a class="sb-link" href="#folder-structure"
+            ><span class="num">05</span> Folder Structure</a
+          >
+          <a class="sb-link" href="#pages"
+            ><span class="num">06</span> Included Pages</a
+          >
+          <a class="sb-link" href="#js-files"
+            ><span class="num">07</span> JavaScript Files</a
+          >
+        </div>
+
+        <div class="sb-section">
+          <div class="sb-section-label">Core Features</div>
+          <a class="sb-link" href="#auth"
+            ><span class="num">08</span> Authentication</a
+          >
+          <a class="sb-link" href="#sidebar-doc"
+            ><span class="num">09</span> Sidebar</a
+          >
+          <a class="sb-link" href="#charts"
+            ><span class="num">10</span> Charts</a
+          >
+          <a class="sb-link" href="#toast"
+            ><span class="num">11</span> Toast Notifications</a
+          >
+          <a class="sb-link" href="#search"
+            ><span class="num">12</span> Search & Filter</a
+          >
+        </div>
+
+        <div class="sb-section">
+          <div class="sb-section-label">Customization</div>
+          <a class="sb-link" href="#colors"
+            ><span class="num">13</span> Colors & Theming</a
+          >
+          <a class="sb-link" href="#build"
+            ><span class="num">14</span> Build & Deploy</a
+          >
+          <a class="sb-link" href="#localstorage"
+            ><span class="num">15</span> localStorage Keys</a
+          >
+        </div>
+
+        <div class="sb-section">
+          <div class="sb-section-label">Support</div>
+          <a class="sb-link" href="#credits"
+            ><span class="num">16</span> Credits</a
+          >
+          <a class="sb-link" href="#support"
+            ><span class="num">17</span> Support</a
+          >
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="main">
+        <!-- HERO -->
+        <div class="hero">
+          <div class="hero-tag">ThemeForest Documentation</div>
+          <h1>Eadvro Dashboard</h1>
+          <p class="hero-desc">
+            Modern education PWA template for online courses, learning platforms,
+            and instructor dashboards — built with Tailwind CSS v4 and Vanilla JS.
+          </p>
+          <div class="hero-badges">
+            <div class="hbadge"><span></span> Tailwind CSS v4</div>
+            <div class="hbadge"><span></span> Vanilla JS</div>
+            <div class="hbadge"><span></span> PWA Ready</div>
+            <div class="hbadge"><span></span> 35+ Screens</div>
+            <div class="hbadge"><span></span> Responsive</div>
+            <div class="hbadge"><span></span> Learning Dashboard</div>
+          </div>
+        </div>
+
+        <!-- 01 OVERVIEW -->
+        <section id="overview">
+          <h2><span class="section-num">01</span> Overview</h2>
+          <p>
+            Thank you for purchasing <strong>Eadvro Dashboard</strong>. This is
+            a modern, fully responsive PWA template for online learning platforms,
+            course marketplaces, and instructor dashboards.
+          </p>
+          <p>
+            Every page is a plain HTML file — no React, no Vue, no Angular. You
+            can open it directly in a browser or integrate it into any backend
+            system.
+          </p>
+          <ul>
+            <li>
+              <strong>Tailwind CSS v4</strong> — utility-first CSS, compiled via
+              npm
+            </li>
+            <li>
+              <strong>Pure Vanilla JS</strong> — zero runtime framework
+              dependencies
+            </li>
+            <li>
+              <strong>Course analytics</strong> — charts for student progress,
+              lesson completion, and learning metrics
+            </li>
+            <li>
+              <strong>35+ HTML pages</strong> — enrollment, course list, lesson,
+              dashboard, profile, and settings
+            </li>
+            <li>
+              <strong>Fully responsive</strong> — desktop, tablet, and mobile
+              with a polished sidebar experience
+            </li>
+            <li>
+              <strong>Toast notifications</strong> — stackable success / error /
+              info / warning system
+            </li>
+            <li>
+              <strong>Smart redirect</strong> — splash screen detects login
+              state and routes automatically
+            </li>
+          </ul>
+        </section>
+
+        <!-- 02 REQUIREMENTS -->
+        <section id="requirements">
+          <h2><span class="section-num">02</span> Requirements</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tool</th>
+                  <th>Version</th>
+                  <th>Purpose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Node.js</strong></td>
+                  <td>≥ 18</td>
+                  <td>Required to run npm scripts</td>
+                </tr>
+                <tr>
+                  <td><strong>npm</strong></td>
+                  <td>≥ 9</td>
+                  <td>Package manager</td>
+                </tr>
+                <tr>
+                  <td><strong>VS Code</strong></td>
+                  <td>Any</td>
+                  <td>Recommended editor</td>
+                </tr>
+                <tr>
+                  <td><strong>Modern Browser</strong></td>
+                  <td>Chrome / Firefox / Safari / Edge</td>
+                  <td>No IE support</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="box box-info">
+            <span class="box-icon">ℹ</span>
+            <p>
+              <strong
+                >No build step needed to view pages in development.</strong
+              >
+              The compiled <code>output.css</code> is already included. Just run
+              <code>npm install</code> and use VS Code Live Server or
+              <code>npm run dev</code>.
+            </p>
+          </div>
+        </section>
+
+        <!-- 03 INSTALLATION -->
+        <section id="installation">
+          <h2><span class="section-num">03</span> Installation</h2>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <h4>Extract the ZIP</h4>
+                <p>
+                  Extract the downloaded ZIP file. You will get a
+                  <code>eadvro/</code> folder.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <h4>Open in VS Code</h4>
+                <p>
+                  Open the <code>eadvro/</code> folder in VS Code.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <h4>Install dependencies</h4>
+                <p>Open the terminal in VS Code and run:</p>
+                <pre><code>npm install</code></pre>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-body">
+                <h4>Start development</h4>
+                <p>
+                  Run the dev server — this starts Tailwind watch + browser-sync
+                  with hot reload:
+                </p>
+                <pre><code>npm run dev</code></pre>
+                <p>
+                  Browser opens automatically at
+                  <code>http://localhost:3000</code> on the login page.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 04 RUNNING -->
+        <section id="running">
+          <h2><span class="section-num">04</span> Running the Project</h2>
+
+          <h3>Development</h3>
+          <pre><code>npm run dev</code></pre>
+          <p>Starts two things simultaneously:</p>
+          <ul>
+            <li>
+              Tailwind CSS watcher — recompiles
+              <code>src/css/output.css</code> on every change
+            </li>
+            <li>
+              Browser-sync server at <code>http://localhost:3000</code> —
+              auto-reloads on file changes
+            </li>
+          </ul>
+
+          <h3>Production Build</h3>
+          <pre><code>npm run build</code></pre>
+          <p>Builds everything into the <code>dist/</code> folder:</p>
+          <ul>
+            <li>Minifies CSS via Tailwind</li>
+            <li>Copies all JS, assets, fonts and images</li>
+            <li>Copies vendor libs (ApexCharts)</li>
+            <li>Minifies all HTML pages</li>
+          </ul>
+
+          <h3>Preview Production Build</h3>
+          <pre><code>npm run preview</code></pre>
+          <p>
+            Serves the <code>dist/</code> folder at
+            <code>http://localhost:3000</code> so you can verify the build
+            before deploying.
+          </p>
+
+          <div class="box box-warn">
+            <span class="box-icon">⚠</span>
+            <p>
+              Always run <code>npm run build</code> before
+              <code>npm run preview</code>. Preview serves the last built
+              version.
+            </p>
+          </div>
+        </section>
+
+        <!-- 05 FOLDER STRUCTURE -->
+        <section id="folder-structure">
+          <h2><span class="section-num">05</span> Folder Structure</h2>
+          <div class="tree">
+            <span class="folder">eadvro/</span>
+            ├── <span class="important">index.html</span>
+            <span class="comment"
+              ># Splash screen — auto-redirects to login or dashboard</span
+            >
+            ├── <span class="important">package.json</span>
+            <span class="comment"># npm scripts and dependencies</span> ├──
+            404.html <span class="comment"># Custom 404 page</span> ├──
+            favicon.ico │ ├── <span class="folder">src/</span>
+            <span class="comment"># All source files — edit here</span> │ ├──
+            <span class="folder">css/</span> │ │ ├── main.css
+            <span class="comment"
+              ># Tailwind input — add @theme variables here</span
+            >
+            │ │ ├── output.css
+            <span class="comment"># Compiled by Tailwind — DO NOT edit</span> │
+            │ ├── custom-style.css
+            <span class="comment"># All custom component styles</span> │ │ └──
+            fonts.css <span class="comment"># Font-face declarations</span> │ │
+            │ ├── <span class="folder">js/</span> │ │ ├── layout.js
+            <span class="comment"
+              ># Shared: sidebar, toast, nav, avatar, logout</span
+            >
+            │ │ ├── dashboard.js
+            <span class="comment"
+              ># Dashboard only: charts, stat cards, POS</span
+            >
+            │ │ ├── auth.js
+            <span class="comment"># All auth pages logic</span> │ │ ├──
+            search.js
+            <span class="comment"># Search modal + filter modal</span> │ │ ├──
+            settings.js <span class="comment"># Settings page logic</span> │ │
+            ├── add-product.js <span class="comment"># Add product form</span> │
+            │ └── <span class="folder">vendor/</span>
+            <span class="comment"># apexcharts, leaflet</span> │ │ │ ├──
+            <span class="folder">assets/</span> │ │ ├──
+            <span class="folder">images/</span>
+            <span class="comment"
+              ># Product images, logo, auth background, marker icons</span
+            >
+            │ │ └── <span class="folder">fonts/</span>
+            <span class="comment"># Plus Jakarta Sans woff2 files</span> │ │ │
+            └── <span class="folder">pages/</span> │ ├──
+            <span class="folder">auth/</span>
+            <span class="comment"
+              ># login, register, otp, forgot-password...</span
+            >
+            │ └── <span class="folder">dashboard/</span>
+            <span class="comment"
+              ># dashboard, settings, products, messages...</span
+            >
+            │ └── <span class="folder">dist/</span>
+            <span class="comment"
+              ># Generated by npm run build — deploy this folder</span
+            >
+          </div>
+          <div class="box box-tip">
+            <span class="box-icon">💡</span>
+            <p>
+              Only edit files inside <code>src/</code>. The
+              <code>dist/</code> folder is auto-generated on every build and
+              should not be manually edited.
+            </p>
+          </div>
+        </section>
+
+        <!-- 06 PAGES -->
+        <section id="pages">
+          <h2><span class="section-num">06</span> Included Pages</h2>
+
+          <h3>Entry Points</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>File</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>index.html</code></td>
+                  <td>
+                    Splash screen — detects login state, redirects to dashboard
+                    or login automatically
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>404.html</code></td>
+                  <td>Custom not-found page with sidebar and return button</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>
+            Authentication Pages <span class="badge badge-blue">auth.js</span>
+          </h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>File</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>login.html</code></td>
+                  <td>Email + password sign in with social buttons</td>
+                </tr>
+                <tr>
+                  <td><code>register.html</code></td>
+                  <td>Full registration form with phone country picker</td>
+                </tr>
+                <tr>
+                  <td><code>forgot-password.html</code></td>
+                  <td>Enter email to receive reset OTP</td>
+                </tr>
+                <tr>
+                  <td><code>enter-otp.html</code></td>
+                  <td>5-digit OTP with 60s countdown and resend</td>
+                </tr>
+                <tr>
+                  <td><code>verify-email.html</code></td>
+                  <td>Email verification after registration</td>
+                </tr>
+                <tr>
+                  <td><code>new-password.html</code></td>
+                  <td>Set new password after OTP confirmation</td>
+                </tr>
+                <tr>
+                  <td><code>choose-location.html</code></td>
+                  <td>GPS or search for delivery location</td>
+                </tr>
+                <tr>
+                  <td><code>choose-location-map.html</code></td>
+                  <td>Select location from a list</td>
+                </tr>
+                <tr>
+                  <td><code>profile-photo.html</code></td>
+                  <td>Upload profile photo, saved to localStorage</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>
+            Dashboard Pages <span class="badge badge-orange">layout.js</span>
+          </h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>File</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>dashboard.html</code></td>
+                  <td>
+                    Main overview — stat cards, revenue chart, recent orders,
+                    POS activities
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>settings.html</code></td>
+                  <td>
+                    Avatar upload, personal info, password change, delivery
+                    locations
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>add-products.html</code></td>
+                  <td>Add product with image drag & drop, category, price</td>
+                </tr>
+                <tr>
+                  <td><code>products.html</code></td>
+                  <td>Products list</td>
+                </tr>
+                <tr>
+                  <td><code>track-order.html</code></td>
+                  <td>Order tracking</td>
+                </tr>
+                <tr>
+                  <td><code>messages.html</code></td>
+                  <td>Messages / chat</td>
+                </tr>
+                <tr>
+                  <td><code>wallet.html</code></td>
+                  <td>Wallet & payments</td>
+                </tr>
+                <tr>
+                  <td><code>vouchers.html</code></td>
+                  <td>Vouchers sub-page</td>
+                </tr>
+                <tr>
+                  <td><code>delivery.html</code></td>
+                  <td>Delivery management sub-page</td>
+                </tr>
+                <tr>
+                  <td><code>customers.html</code></td>
+                  <td>Customers sub-page</td>
+                </tr>
+                <tr>
+                  <td><code>checkout.html</code></td>
+                  <td>Checkout page</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 07 JS FILES -->
+        <section id="js-files">
+          <h2><span class="section-num">07</span> JavaScript Files</h2>
+          <div class="script-grid">
+            <div class="script-card">
+              <div class="sc-name">layout.js</div>
+              <div class="sc-desc">
+                Loaded on every dashboard page. Contains sidebar, toast, nav
+                active detection, logout, profile dropdown, date display.
+              </div>
+            </div>
+            <div class="script-card">
+              <div class="sc-name">dashboard.js</div>
+              <div class="sc-desc">
+                Dashboard page only. Contains everything in layout.js plus
+                revenue chart, stat cards, POS data, period dropdowns.
+              </div>
+            </div>
+            <div class="script-card">
+              <div class="sc-name">auth.js</div>
+              <div class="sc-desc">
+                All auth pages. Login, register, OTP, forgot password, location
+                picker, profile photo upload.
+              </div>
+            </div>
+            <div class="script-card">
+              <div class="sc-name">search.js</div>
+              <div class="sc-desc">
+                Every dashboard page. Full-screen search modal, filter modal
+                with price range, category, rating, payment type.
+              </div>
+            </div>
+            <div class="script-card">
+              <div class="sc-name">settings.js</div>
+              <div class="sc-desc">
+                Settings page only. Avatar upload/delete, form validation,
+                password change, confirm-delete modal.
+              </div>
+            </div>
+            <div class="script-card">
+              <div class="sc-name">add-product.js</div>
+              <div class="sc-desc">
+                Add products page. Image drag & drop, category select,
+                validation, save draft, publish with toast.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 08 AUTH -->
+        <section id="auth">
+          <h2><span class="section-num">08</span> Authentication</h2>
+          <p>
+            All authentication logic is in <code>auth.js</code> and uses
+            <code>localStorage</code> to simulate a backend — no server
+            required.
+          </p>
+
+          <h3>Login behavior</h3>
+          <ul>
+            <li>
+              If a registered user exists in localStorage and email matches —
+              password is validated
+            </li>
+            <li>
+              If a different email is used — any password works (demo / guest
+              mode)
+            </li>
+            <li>Sign In button is disabled until both fields have content</li>
+          </ul>
+
+          <h3>Registration flow</h3>
+          <pre><code>register → verify-email → choose-location → profile-photo → dashboard</code></pre>
+
+          <h3>Password reset flow</h3>
+          <pre><code>forgot-password → enter-otp → new-password → login</code></pre>
+
+          <h3>Connecting a real backend</h3>
+          <p>
+            Replace the <code>Storage.set / Storage.get</code> calls inside
+            <code>LoginForm</code> and <code>RegisterForm</code> in
+            <code>auth.js</code> with your own <code>fetch()</code> API calls.
+            All UI (toasts, redirects, validation) stays the same.
+          </p>
+        </section>
+
+        <!-- 09 SIDEBAR -->
+        <section id="sidebar-doc">
+          <h2><span class="section-num">09</span> Sidebar</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Breakpoint</th>
+                  <th>Behavior</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>≥ 1280px (Desktop)</td>
+                  <td>
+                    Always visible. Hamburger collapses it to 72px icon-only
+                    mode. State saved in localStorage.
+                  </td>
+                </tr>
+                <tr>
+                  <td>768–1279px (Tablet)</td>
+                  <td>
+                    Hidden off-screen. Toggle slides it in as an overlay with
+                    dark backdrop.
+                  </td>
+                </tr>
+                <tr>
+                  <td>&lt; 768px (Mobile)</td>
+                  <td>Same overlay behavior as tablet.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>Required HTML IDs</h3>
+          <pre><code>id="dashSidebar"         <span class="cm">// the &lt;aside&gt; element</span>
+id="dashMainWrap"        <span class="cm">// main content wrapper</span>
+id="sidebarDashOverlay"  <span class="cm">// dark backdrop div</span>
+id="dashSidebarToggle"   <span class="cm">// hamburger button</span>
+id="iconHamburger"       <span class="cm">// hamburger SVG</span>
+id="iconClose"           <span class="cm">// X SVG (hidden by default)</span></code></pre>
+        </section>
+
+        <!-- 10 CHARTS -->
+        <section id="charts">
+          <h2><span class="section-num">10</span> Charts</h2>
+          <p>
+            Charts are rendered by <code>dashboard.js</code> using
+            <strong>ApexCharts v3</strong>.
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Chart</th>
+                  <th>Element ID</th>
+                  <th>Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Revenue vs Cost</td>
+                  <td><code>#revenueChart</code></td>
+                  <td>Area + Line combo</td>
+                </tr>
+                <tr>
+                  <td>Employee Status (desktop)</td>
+                  <td><code>#employeeDonut</code></td>
+                  <td>Donut</td>
+                </tr>
+                <tr>
+                  <td>Employee Status (mobile)</td>
+                  <td><code>#employeeDonutMobile</code></td>
+                  <td>Donut</td>
+                </tr>
+                <tr>
+                  <td>Sales & Order Types</td>
+                  <td><code>#salesTypesChart</code></td>
+                  <td>Custom HTML bars</td>
+                </tr>
+                <tr>
+                  <td>Payment Methods</td>
+                  <td><code>#paymentBarTrack</code></td>
+                  <td>Pill bar</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>Updating chart data</h3>
+          <pre><code><span class="cm">// In dashboard.js — find the DATA object inside RevenueChart:</span>
+<span class="kw">const</span> RevenueChart = {
+  DATA: {
+    weekly:  { sells: [...], cost: [...], labels: [...], total: <span class="str">"$2800"</span> },
+    monthly: { sells: [...], cost: [...], labels: [...], total: <span class="str">"$18500"</span> },
+  }
+};</code></pre>
+        </section>
+
+        <!-- 11 TOAST -->
+        <section id="toast">
+          <h2><span class="section-num">11</span> Toast Notifications</h2>
+          <p>
+            The toast system is available as <code>window.Toast</code> on every
+            page that loads <code>layout.js</code> or <code>auth.js</code>.
+            Toasts stack, auto-dismiss after 3.5s, and have a close button.
+          </p>
+          <pre><code>Toast.success(<span class="str">"Saved!"</span>, <span class="str">"Your changes have been saved."</span>);
+Toast.error(<span class="str">"Failed"</span>, <span class="str">"Something went wrong."</span>);
+Toast.info(<span class="str">"Note"</span>, <span class="str">"Optional message body."</span>);
+Toast.warning(<span class="str">"Warning"</span>, <span class="str">"Please check your input."</span>);</code></pre>
+        </section>
+
+        <!-- 12 SEARCH -->
+        <section id="search">
+          <h2><span class="section-num">12</span> Search & Filter</h2>
+          <p>
+            <code>search.js</code> creates its own DOM elements appended to
+            <code>&lt;body&gt;</code> — no extra HTML needed. It activates
+            automatically when these elements exist on the page:
+          </p>
+          <pre><code><span class="kw">&lt;input</span> id=<span class="str">"headerSearchInput"</span> type=<span class="str">"search"</span> /&gt;
+<span class="kw">&lt;button</span> id=<span class="str">"filterIconBtn"</span>&gt;&lt;/button&gt;</code></pre>
+          <h3>Filter options</h3>
+          <ul>
+            <li>Price range slider ($0 – $100)</li>
+            <li>
+              Category chips (Pizza, Burger, Sushi, Drinks, Pasta, Dessert)
+            </li>
+            <li>Payment type (Cash / Card / Online)</li>
+            <li>Star rating (1–5 stars)</li>
+          </ul>
+          <h3>Replacing mock data with real API</h3>
+          <pre><code><span class="cm">// In search.js — find MOCK_PRODUCTS and replace:</span>
+<span class="kw">const</span> MOCK_PRODUCTS = <span class="kw">await</span> fetch(<span class="str">'/api/products'</span>).then(r => r.json());</code></pre>
+        </section>
+
+        <!-- 13 COLORS -->
+        <section id="colors">
+          <h2><span class="section-num">13</span> Colors & Theming</h2>
+          <p>
+            All brand colors are defined as CSS variables in
+            <code>src/css/main.css</code>. Change one value and every component
+            updates.
+          </p>
+          <pre><code><span class="cm">/* src/css/main.css — Tailwind @theme block */</span>
+@theme {
+  --color-primary:         <span class="str">#7b48ff</span>;  <span class="cm">/* Primary violet */</span>
+  --color-primary-hover:   <span class="str">#6d39f0</span>;  <span class="cm">/* Hover / action */</span>
+  --color-primary-soft:    <span class="str">#743ffe</span>;  <span class="cm">/* Soft accent */</span>
+  --color-primary-light:   <span class="str">#9f79ff</span>;  <span class="cm">/* Light violet */</span>
+  --color-secondary:       <span class="str">#b092ff</span>;  <span class="cm">/* Secondary accent */</span>
+  --color-dark:            <span class="str">#050505</span>;  <span class="cm">/* App background */</span>
+  --color-card:            <span class="str">#1a1a1a</span>;  <span class="cm">/* Card / panel */</span>
+  --color-border:          <span class="str">#3b3b3b</span>;  <span class="cm">/* Border lines */</span>
+  --color-muted:           <span class="str">#8b8b8b</span>;  <span class="cm">/* Muted text */</span>
+}</code></pre>
+          <p>
+            After changing any color, run <code>npm run dev</code> to recompile
+            Tailwind.
+          </p>
+        </section>
+
+        <!-- 14 BUILD -->
+        <section id="build">
+          <h2><span class="section-num">14</span> Build & Deploy</h2>
+
+          <h3>All npm commands</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Command</th>
+                  <th>What it does</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>npm install</code></td>
+                  <td>Install all dependencies (run once after download)</td>
+                </tr>
+                <tr>
+                  <td><code>npm run dev</code></td>
+                  <td>
+                    Start development — Tailwind watch + browser-sync with hot
+                    reload
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>npm run build</code></td>
+                  <td>Full production build into <code>dist/</code></td>
+                </tr>
+                <tr>
+                  <td><code>npm run preview</code></td>
+                  <td>Serve <code>dist/</code> locally to verify the build</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Deploying</h3>
+          <p>
+            After <code>npm run build</code>, upload the entire
+            <code>dist/</code> folder to your hosting provider. The
+            <code>dist/</code> folder is completely self-contained.
+          </p>
+
+          <div class="box box-success">
+            <span class="box-icon">✓</span>
+            <p>
+              Works with
+              <strong
+                >Netlify, Vercel, GitHub Pages, cPanel, or any static
+                host</strong
+              >
+              — just upload the <code>dist/</code> folder contents.
+            </p>
+          </div>
+
+          <h3>Netlify custom 404</h3>
+          <pre><code><span class="cm"># Create a _redirects file in dist/</span>
+/*  /404.html  404</code></pre>
+        </section>
+
+        <!-- 15 LOCALSTORAGE -->
+        <section id="localstorage">
+          <h2><span class="section-num">15</span> localStorage Keys</h2>
+          <p>
+            All keys are prefixed with <code>eadvro_</code> to avoid conflicts
+            with other apps on the same domain.
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Key</th>
+                  <th>Type</th>
+                  <th>Contents</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>eadvro_user</code></td>
+                  <td>JSON object</td>
+                  <td>name, email, phone, password, address fields</td>
+                </tr>
+                <tr>
+                  <td><code>eadvro_avatar</code></td>
+                  <td>base64 string</td>
+                  <td>Profile photo as data URL</td>
+                </tr>
+                <tr>
+                  <td><code>eadvro_location</code></td>
+                  <td>JSON object</td>
+                  <td>
+                    <code>{ name, lat?, lng? }</code> — set during onboarding
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>eadvro_pending_email</code></td>
+                  <td>string</td>
+                  <td>Email awaiting verification</td>
+                </tr>
+                <tr>
+                  <td><code>eadvro_reset_email</code></td>
+                  <td>string</td>
+                  <td>Email used in forgot-password flow</td>
+                </tr>
+                <tr>
+                  <td><code>eadvro_courses</code></td>
+                  <td>JSON array</td>
+                  <td>Courses added via course creation page</td>
+                </tr>
+                <tr>
+                  <td><code>eadvro_bookmarks</code></td>
+                  <td>JSON array</td>
+                  <td>Course IDs bookmarked in search modal</td>
+                </tr>
+                <tr>
+                  <td><code>dash_sidebar_collapsed</code></td>
+                  <td>"0" / "1"</td>
+                  <td>Desktop sidebar collapse state</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 16 CREDITS -->
+        <section id="credits">
+          <h2><span class="section-num">16</span> Credits</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Library</th>
+                  <th>Version</th>
+                  <th>Used for</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <a href="https://tailwindcss.com" target="_blank"
+                      >Tailwind CSS</a
+                    >
+                  </td>
+                  <td>v4</td>
+                  <td>Utility-first CSS framework</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="https://apexcharts.com" target="_blank"
+                      >ApexCharts</a
+                    >
+                  </td>
+                  <td>v3.54</td>
+                  <td>Revenue and donut charts</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="https://leafletjs.com" target="_blank"
+                      >Leaflet.js</a
+                    >
+                  </td>
+                  <td>v1.9.4</td>
+                  <td>Interactive maps on location picker pages</td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <a
+                      href="https://fonts.google.com/specimen/Plus+Jakarta+Sans"
+                      target="_blank"
+                      >Plus Jakarta Sans</a
+                    >
+                  </td>
+                  <td>—</td>
+                  <td>Typography</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 17 SUPPORT -->
+        <section id="support">
+          <h2><span class="section-num">17</span> Support</h2>
+          <p>
+            For support, please use the ThemeForest item support page. Before
+            submitting a ticket:
+          </p>
+          <ul>
+            <li>
+              Run <code>npm run dev</code> to make sure
+              <code>output.css</code> is up to date
+            </li>
+            <li>
+              Open browser DevTools (F12) and check the Console for JS errors
+            </li>
+            <li>
+              Make sure you are opening pages via a local server, not
+              <code>file://</code>
+            </li>
+            <li>
+              Verify you ran <code>npm install</code> before running any scripts
+            </li>
+          </ul>
+          <div class="box box-info">
+            <span class="box-icon">ℹ</span>
+            <p>
+              <strong>Response time:</strong> Support requests are answered
+              within 24–48 hours on business days.
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,882 @@
+# Edavro – Online Learning Platform Next.js Documentation
+
+Edavro is a complete online education platform built with **Next.js**, including both a **frontend mobile-first PWA learning app** and an **admin dashboard panel**.
+
+The project is designed for eLearning platforms, online course marketplaces, education SaaS products, training portals, and digital learning businesses. It provides a complete user experience for students on the frontend and a powerful management system for administrators on the dashboard side.
+
+Edavro was originally designed as a Figma UI kit and has now been converted into a production-ready **Next.js interface**, making it easier for developers to customize, extend, and integrate with backend APIs.
+
+---
+
+# Project Overview
+
+Edavro consists of two main parts:
+
+## 1. Frontend PWA Mobile App
+
+The frontend is a **mobile-first Progressive Web App** designed for learners. It provides a smooth course discovery, enrollment, payment, learning progress, certification, messaging, profile, and support experience.
+
+The app is built with a modern dark-mode visual style and is optimized for mobile devices. It can be used as a web-based mobile learning platform and can also be installed as a PWA on supported devices.
+
+## 2. Admin Dashboard Panel
+
+The admin dashboard is a desktop-focused management panel for platform owners, admins, and education teams. It helps manage students, courses, revenue, transactions, certificates, chat, and platform performance from one centralized interface.
+
+The dashboard uses a clean sidebar navigation system, structured tables, performance cards, data visualization sections, course management screens, and admin controls.
+
+---
+
+# Technology Stack
+
+The Edavro Next.js project uses a modern frontend architecture.
+
+## Core Technologies
+
+* Next.js
+* React
+* JavaScript or TypeScript, depending on project setup
+* HTML5
+* CSS3 / SCSS / Tailwind CSS, depending on implementation
+* Responsive layout system
+* Component-based UI structure
+* Progressive Web App support for frontend mobile app
+
+## Font
+
+* Roboto
+
+## Design Source
+
+* Edavro Education Online Course Mobile App UI Kit
+* Edavro Online Learning Management Dashboard UI Kit
+
+---
+
+# Frontend PWA Mobile App
+
+The frontend app is designed for students and learners. It focuses on course browsing, enrollment, learning progress, certification, payment, messaging, and profile management.
+
+## Frontend App Purpose
+
+The mobile PWA allows users to:
+
+* Discover online courses
+* Browse recommended and free courses
+* Search for learning content
+* View detailed course information
+* Purchase or enroll in courses
+* Track learning progress
+* View certificates
+* Save courses to wishlist
+* Receive notifications
+* Chat or message support
+* Manage profile and account settings
+* Access help, privacy, and security options
+
+---
+
+# Frontend PWA Features
+
+## Splash and Onboarding
+
+The app includes an introductory flow for new users.
+
+Screens include:
+
+* Splash screen
+* Onboarding screens
+* Introductory learning experience
+* App value proposition
+* Smooth transition into authentication
+
+## Authentication
+
+The frontend includes a complete authentication flow for students.
+
+Available screens include:
+
+* Sign In – Blank Form
+* Sign In – Filled Form
+* Sign In Successful
+* Reset Password
+* OTP Code Verification
+* Create New Password
+* Reset Password Successful
+* Sign Up – Blank Form
+* Sign Up – Filled Form
+
+## Profile Setup
+
+After registration, users can complete their learning profile.
+
+Screens include:
+
+* Complete Your Profile
+* Profile Setup Successful
+* Interests selection
+* Current experience level
+* Learning purpose selection
+
+This flow helps personalize the student experience based on interests, goals, and skill level.
+
+## Home Page
+
+The home page is the main discovery area for learners.
+
+It includes:
+
+* Featured learning content
+* Recommended courses
+* Upcoming sessions
+* Free courses
+* Course categories
+* Search access
+* Personalized learning sections
+
+## Search
+
+The search section allows users to find courses, topics, or learning resources.
+
+Available screens include:
+
+* Search
+* Search Results
+* Search suggestions
+* Course discovery layout
+
+## Course Details
+
+The course details page provides complete information about a selected course.
+
+It can include:
+
+* Course title
+* Course thumbnail
+* Instructor details
+* Course description
+* Course rating
+* Price
+* Lessons or modules
+* Enrollment button
+* Course benefits
+* Reviews
+* Related courses
+
+## Payment Flow
+
+The frontend includes a secure payment interface for course purchases or subscriptions.
+
+Screens include:
+
+* Secure Payment
+* Card selection
+* Add card
+* Passcode
+* Payment confirmation
+
+This flow is suitable for paid course enrollment, subscription plans, and premium learning content.
+
+## My Courses
+
+The My Courses section allows students to access enrolled courses.
+
+It includes:
+
+* Active courses
+* Course progress
+* Learning progress
+* Downloaded courses
+* Completed courses
+* Certification access
+
+## Certification
+
+The certification section allows users to view earned certificates after course completion.
+
+Screens include:
+
+* Certification
+* Certification details
+* Downloadable certificate view
+
+## Wishlist
+
+The wishlist page allows learners to save courses for later.
+
+It includes:
+
+* Saved courses
+* Course cards
+* Ratings
+* Course provider
+* Price
+* Course category
+
+## Notifications and Reminder
+
+The app includes notification and reminder screens to keep students updated.
+
+Use cases include:
+
+* Course reminders
+* Session reminders
+* Payment notifications
+* Course updates
+* Certificate updates
+* General platform alerts
+
+## Message and Support
+
+The frontend includes communication screens for learner support.
+
+Available screens include:
+
+* Message
+* Message Details
+* Support
+* Help Center
+* Frequently Asked Questions
+
+## Profile and Settings
+
+The profile section allows students to manage personal information and app preferences.
+
+Screens include:
+
+* Profile
+* Personal Data
+* Payment Account
+* Add New Card
+* Language
+* Notifications
+* Security
+* Privacy Policy
+* Logout
+
+---
+
+# Frontend PWA Pages
+
+The frontend mobile PWA includes the following pages:
+
+1. Splash Screen
+2. Onboarding
+3. Onboarding
+4. Onboarding
+5. Sign In – Blank Form
+6. Sign In – Filled Form
+7. Dark – Sign In Successful
+8. Reset Password
+9. OTP Code Verification
+10. Create New Password
+11. Reset Password Successful
+12. Sign Up – Blank Form
+13. Sign Up – Filled Form
+14. Complete Your Profile
+15. Profile Set Up Successful
+16. Interests 01
+17. Interests 02
+18. Interests 03
+19. Current Experience Level
+20. Purpose
+21. Home Page Scroll
+22. Home Page
+23. Upcoming Sessions
+24. Recommended for You
+25. Free Courses
+26. Upcoming Sessions
+27. Recommended for You
+28. Free Courses
+29. Search
+30. Search 02
+31. Course Details
+32. Secure Payment
+33. Secure Payment
+34. Card
+35. Card 02
+36. Secure Payment
+37. Passcode
+38. Pay Confirmation
+39. My Courses
+40. My Courses 02
+41. Learning Progress
+42. Certification
+43. Certification 02
+44. Downloaded Courses
+45. Wishlist
+46. Notifications
+47. Reviews
+48. Reminder
+49. Subscription
+50. Frequently Asked Questions
+51. Message
+52. Message 02
+53. Support
+54. Profile
+55. Personal Data
+56. Payment Account
+57. Add New Card
+58. Add New Card
+59. Language
+60. Notifications
+61. Security
+62. Help Center
+63. Privacy Policy
+64. Logout
+
+More pages can be added as needed.
+
+---
+
+# Admin Dashboard Panel
+
+The admin dashboard is designed for platform administrators, course managers, instructors, and business owners.
+
+It provides tools to manage the learning platform, track analytics, monitor students, control courses, review transactions, and manage certificates.
+
+## Admin Dashboard Purpose
+
+The dashboard allows admins to:
+
+* Monitor platform performance
+* Track revenue and earnings
+* Analyze student enrollment
+* Manage students
+* Manage courses
+* View course details
+* Handle transactions
+* Manage certificates
+* Communicate through chat
+* Review geographic performance
+* Manage admin settings
+
+---
+
+# Admin Dashboard Features
+
+## Authentication
+
+The dashboard includes admin authentication screens.
+
+Available screens include:
+
+* Sign In – Filled Form
+* Sign Up – Filled Form
+* Forgot Password
+* OTP Code Verification
+* Create New Password
+
+## Dashboard Home
+
+The admin dashboard home page provides a high-level overview of platform performance.
+
+It includes:
+
+* Average earning
+* Last month earning
+* Last year earning
+* Annual growth
+* Student analysis chart
+* Enrollment statistics
+* Student left/drop-off indicator
+* Geo-location insight
+* Top courses
+* Upcoming courses
+* Promotional banner
+* Search and notification controls
+
+## Student Management
+
+The student section allows administrators to manage all enrolled users.
+
+It includes:
+
+* Student list
+* Search bar
+* Filter option
+* Date range selector
+* Add student button
+* Edit student action
+* Delete student action
+* Student status badges
+* Pagination
+
+Each student row can display:
+
+* Student name
+* Enrollment date
+* Course name
+* Course fee
+* User ID
+* Status
+* Action buttons
+
+## Student Details
+
+The student details page provides a complete student profile view.
+
+It includes:
+
+* Student image
+* Name
+* Role or profession
+* Short bio
+* Personal information
+* Course count
+* Watch time
+* Certificate count
+* Achievements
+* Enrolled courses table
+
+The enrolled courses section may include:
+
+* Course name
+* Level
+* Progress
+* Date
+* Course fee
+* Course status
+* Edit and delete actions
+
+## Course Management
+
+The course section allows admins to manage course content and details.
+
+It includes:
+
+* Course list
+* Add course
+* Edit course
+* Course overview
+* FAQ tab
+* Review tab
+* Course content sidebar
+* Lesson sections
+* Video preview
+* Instructor information
+* Course description
+
+## Wishlist / Resources
+
+The admin dashboard also includes a wishlist or saved resource area.
+
+It uses a card-based layout and can display:
+
+* Course image
+* Platform or provider
+* Course title
+* Category
+* Rating
+* Price
+* More actions menu
+
+## Chat
+
+The chat section supports communication between admins, students, instructors, or support members.
+
+It includes:
+
+* Conversation list
+* Search or start new chat
+* Chat categories
+* Message preview
+* Main message area
+* Attachment preview
+* Reply input
+* Text formatting toolbar
+* Send button
+
+## Transaction Management
+
+The transaction section helps admins track payments and course purchases.
+
+It includes:
+
+* Transaction list
+* Customer name
+* Course name
+* Course fee
+* Payment method
+* Payment status
+* Add transaction
+* Edit transaction
+* Delete transaction
+* Search
+* Filter
+* Date range selector
+* Pagination
+
+Payment statuses include:
+
+* Success
+* Pending
+* Cancel
+
+## Certificate Management
+
+The certificate section helps admins manage course certificates.
+
+It includes:
+
+* Certificate list
+* Course name
+* Number of students
+* Certified count
+* Date
+* Lesson duration
+* Status
+* Edit action
+* Delete action
+* Search
+* Filter
+* Date range selector
+* Pagination
+
+Statuses may include:
+
+* Active
+* Upcoming
+* Push
+
+## Settings
+
+The admin panel includes settings screens for platform configuration.
+
+Settings may include:
+
+* General settings
+* Linked accounts
+* Notifications
+* Language
+* Password management
+
+## Error Pages
+
+The dashboard includes multiple 404 page designs.
+
+Available error pages include:
+
+* 404 Page – Style 01
+* 404 Page – Style 02
+* 404 Page – Style 03
+
+---
+
+# Admin Dashboard Pages
+
+The admin dashboard includes the following pages:
+
+1. Sign In – Filled Form
+2. Sign Up – Filled Form
+3. Forgot Password
+4. OTP Code Verification
+5. Create New Password
+6. Dashboard Home
+7. Student List
+8. Delete Student
+9. Add Student
+10. Edit Student
+11. Student Details
+12. Course List
+13. Course List Alternative
+14. Add Course
+15. Edit Course
+16. Course Overview
+17. Course FAQ
+18. Course Review
+19. Wishlist
+20. Chat
+21. Transaction
+22. Add Transaction
+23. Edit Transaction
+24. Order Details
+25. Order Courses Details
+26. Order Invoice Details
+27. Top Certificate
+28. Course List Admin
+29. Add Certificate
+30. Settings – General
+31. Link Account
+32. Notification
+33. Language
+34. Password
+35. 404 Page – Style 01
+36. 404 Page – Style 02
+37. 404 Page – Style 03
+
+More pages can be added in future updates.
+
+---
+
+# UI Design Description
+
+Edavro uses a modern, clean, and education-focused interface.
+
+## Frontend Mobile App UI
+
+The frontend mobile app uses:
+
+* Dark-mode visual style
+* Mobile-first layout
+* Rounded cards
+* Large course thumbnails
+* Simple navigation
+* Clean course details
+* Easy payment flow
+* Profile-based personalization
+* Smooth onboarding experience
+* App-like PWA interaction
+
+The frontend is optimized for students and learners who primarily use mobile devices.
+
+## Admin Dashboard UI
+
+The admin dashboard uses:
+
+* Desktop admin layout
+* Dark sidebar navigation
+* Light content background
+* Purple primary brand color
+* Data cards
+* Tables
+* Charts
+* Status badges
+* Course cards
+* Profile cards
+* Action buttons
+* Search and filter controls
+
+The admin panel is optimized for management, monitoring, and operational workflows.
+
+---
+
+# Design System
+
+## Primary Color
+
+Purple is used as the main brand color for active states, buttons, highlights, and navigation indicators.
+
+## Supporting Colors
+
+* Green for success and active states
+* Red for delete, danger, cancel, and error states
+* Yellow for pending or warning states
+* Gray for secondary text and muted information
+* White and soft lavender for card and page backgrounds
+* Black or charcoal for dashboard sidebar and dark sections
+
+## Typography
+
+The project uses Roboto as the primary font.
+
+Typography is structured for readability:
+
+* Large titles for page headings
+* Medium text for section titles
+* Regular text for descriptions
+* Small muted text for helper labels
+* Bold text for important values and table names
+
+---
+
+# Recommended Project Structure
+
+A recommended Next.js project structure is shown below:
+
+```txt
+edavro-nextjs/
+├── public/
+│   ├── images/
+│   ├── icons/
+│   ├── logos/
+│   └── manifest.json
+├── src/
+│   ├── app/
+│   │   ├── frontend/
+│   │   │   ├── splash/
+│   │   │   ├── onboarding/
+│   │   │   ├── auth/
+│   │   │   ├── home/
+│   │   │   ├── search/
+│   │   │   ├── courses/
+│   │   │   ├── payment/
+│   │   │   ├── my-courses/
+│   │   │   ├── certification/
+│   │   │   ├── wishlist/
+│   │   │   ├── notifications/
+│   │   │   ├── messages/
+│   │   │   ├── support/
+│   │   │   └── profile/
+│   │   ├── dashboard/
+│   │   │   ├── auth/
+│   │   │   ├── home/
+│   │   │   ├── students/
+│   │   │   ├── courses/
+│   │   │   ├── wishlist/
+│   │   │   ├── chat/
+│   │   │   ├── transactions/
+│   │   │   ├── certificates/
+│   │   │   ├── settings/
+│   │   │   └── not-found/
+│   │   ├── layout.jsx
+│   │   └── page.jsx
+│   ├── components/
+│   │   ├── frontend/
+│   │   ├── dashboard/
+│   │   ├── common/
+│   │   ├── layout/
+│   │   ├── cards/
+│   │   ├── tables/
+│   │   ├── forms/
+│   │   ├── modals/
+│   │   └── charts/
+│   ├── data/
+│   ├── hooks/
+│   ├── styles/
+│   ├── utils/
+│   └── config/
+├── package.json
+└── README.md
+```
+
+---
+
+# Installation
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
+
+```bash
+npm run dev
+```
+
+Open the project in your browser:
+
+```txt
+http://localhost:3000
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+Start the production server:
+
+```bash
+npm start
+```
+
+---
+
+# PWA Setup
+
+The frontend mobile app is designed as a Progressive Web App.
+
+A typical PWA setup may include:
+
+* Web app manifest
+* App name and short name
+* Theme color
+* Background color
+* App icons
+* Mobile viewport optimization
+* Installable app behavior
+* Offline support, if service worker is enabled
+
+Example PWA use cases:
+
+* Students can open the app from mobile browsers
+* Users can install the app on supported devices
+* The app can provide a mobile app-like experience
+* Course content and navigation can be optimized for small screens
+
+---
+
+# Customization Guide
+
+You can customize the project based on your brand and backend requirements.
+
+## Common Customization Areas
+
+* Logo
+* Brand color
+* Typography
+* Sidebar menu
+* Frontend bottom navigation
+* Course categories
+* Course data
+* Student data
+* Transaction data
+* Certificate data
+* Profile fields
+* Payment flow
+* Dashboard statistics
+* Chart data
+* Static images
+* API integration
+
+## Replacing Demo Data
+
+The project may use static demo data for courses, students, transactions, messages, and certificates.
+
+For production use, replace static data with API responses from:
+
+* REST API
+* GraphQL API
+* Headless CMS
+* Custom backend
+* Firebase
+* Supabase
+* Laravel API
+* Node.js API
+* Any LMS backend service
+
+---
+
+# Image and Asset Notes
+
+Images used in the demo screens are for preview purposes only.
+
+Some demo images may come from:
+
+* Freepik
+* Pexels
+* Pixabay
+
+Before using these images in a commercial or live project, make sure you have the correct license. You can also replace the demo images with your own licensed images, course thumbnails, instructor images, and student profile photos.
+
+---
+
+# Use Cases
+
+Edavro can be used for:
+
+* Online learning platforms
+* LMS websites
+* Education mobile web apps
+* Course marketplace platforms
+* Training management systems
+* Corporate learning portals
+* Instructor-led course platforms
+* Student learning apps
+* Education SaaS dashboards
+* Admin management systems
+* Certification platforms
+* Subscription-based learning products
+
+---
+
+# Final Note
+
+Edavro provides a complete design and frontend foundation for building an online education platform with Next.js.
+
+The project includes a **mobile-first PWA frontend for students** and a **desktop admin dashboard panel for administrators**. Together, they create a complete LMS product experience, covering course discovery, user onboarding, payment, learning progress, messaging, profile management, analytics, student management, course management, transactions, and certificates.
+
+This structure makes Edavro suitable for startups, SaaS products, course marketplaces, education businesses, and developers who want to build a modern online learning platform quickly.

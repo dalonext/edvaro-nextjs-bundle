@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EdaVro Documentation</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+          --orange: #7b48ff;
+          --orange-dim: rgba(123, 72, 255, 0.12);
+          --orange-glow: rgba(123, 72, 255, 0.18);
+          --bg: #0a0a0b;
+          --surface: #121214;
+          --surface2: #1a1a1d;
+          --border: rgba(255, 255, 255, 0.08);
+          --border2: rgba(255, 255, 255, 0.12);
+          --text: #f8f9fa;
+          --muted: #8e9196;
+          --green: #10b981;
+          --yellow: #f59e0b;
+          --sidebar-w: 280px;
+          --header-h: 64px;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+          background: var(--bg);
+          color: var(--text);
+          font-family: "Inter", "Plus Jakarta Sans", system-ui, sans-serif;
+          line-height: 1.6;
+          overflow-x: hidden;
+          -webkit-font-smoothing: antialiased;
+        }
+        .doc-root { display: flex; min-height: 100vh; }
+        .doc-topbar {
+          display: none;
+          position: fixed;
+          top: 0; left: 0; right: 0;
+          height: var(--header-h);
+          background: rgba(18, 18, 20, 0.96);
+          border-bottom: 1px solid var(--border);
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 20px;
+          z-index: 200;
+          backdrop-filter: blur(10px);
+        }
+        .doc-topbar-logo { font-size: 20px; font-weight: 800; color: var(--orange); letter-spacing: -0.8px; }
+        .doc-hamburger {
+          background: var(--surface2);
+          border: 1px solid var(--border2);
+          border-radius: 10px;
+          width: 40px; height: 40px;
+          display: flex; flex-direction: column;
+          align-items: center; justify-content: center;
+          gap: 4px; cursor: pointer;
+        }
+        .doc-hamburger span { display: block; width: 20px; height: 2px; background: var(--text); border-radius: 2px; }
+        .doc-sidebar {
+          position: fixed;
+          top: 0; left: 0;
+          width: var(--sidebar-w);
+          height: 100vh;
+          background: var(--surface);
+          border-right: 1px solid var(--border);
+          display: flex; flex-direction: column;
+          z-index: 100;
+          overflow-y: auto;
+          transition: transform 0.3s ease;
+        }
+        .doc-sidebar-logo { padding: 32px 28px 24px; border-bottom: 1px solid var(--border); }
+        .doc-logo-mark { font-size: 26px; font-weight: 900; color: var(--orange); display: block; margin-bottom: 2px; }
+        .doc-logo-sub { font-size: 10px; color: var(--muted); font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+        .doc-sidebar-version { padding: 16px 28px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); }
+        .doc-version-badge { background: var(--orange-dim); color: var(--orange); font-size: 10px; font-weight: 800; padding: 3px 9px; border-radius: 6px; border: 1px solid rgba(123, 72, 255, 0.25); }
+        .doc-nav { padding: 20px 16px; flex: 1; }
+        .doc-nav-label { font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); padding: 0 14px; margin: 16px 0 10px; }
+        .doc-nav-item {
+          display: flex; align-items: center; gap: 12px;
+          padding: 10px 14px; border-radius: 10px; cursor: pointer;
+          transition: all 0.2s; font-size: 14px; font-weight: 500;
+          color: var(--muted); border: none; background: none;
+          width: 100%; text-align: left; margin-bottom: 4px;
+        }
+        .doc-nav-item:hover { background: var(--surface2); color: var(--text); }
+        .doc-nav-item.active { background: var(--orange-dim); color: var(--orange); font-weight: 600; }
+        .doc-nav-num { font-size: 11px; font-weight: 700; font-family: monospace; color: inherit; opacity: 0.55; min-width: 24px; }
+        .doc-main { margin-left: var(--sidebar-w); flex: 1; padding: 80px 72px 140px; max-width: 1100px; }
+        .doc-hero { margin-bottom: 72px; padding-bottom: 52px; border-bottom: 1px solid var(--border); position: relative; }
+        .doc-hero::before { content: ''; position: absolute; top: -100px; left: -100px; width: 500px; height: 400px; background: radial-gradient(circle, var(--orange-glow) 0%, transparent 70%); pointer-events: none; }
+        .doc-hero-eyebrow { font-size: 12px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--orange); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+        .doc-hero-eyebrow::before { content: ''; width: 30px; height: 2px; background: var(--orange); border-radius: 2px; }
+        .doc-hero-title { font-size: clamp(36px, 5vw, 56px); font-weight: 900; color: var(--text); line-height: 1.05; letter-spacing: -2px; margin-bottom: 20px; }
+        .doc-hero-title span { color: var(--orange); }
+        .doc-hero-desc { font-size: 18px; color: #a1a1aa; max-width: 720px; line-height: 1.65; margin-bottom: 28px; }
+        .doc-hero-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .doc-hero-tag { background: var(--surface2); border: 1px solid var(--border2); color: var(--text); font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 8px; }
+        .doc-section { margin-bottom: 82px; scroll-margin-top: 40px; }
+        .doc-section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+        .doc-section-num { font-size: 12px; font-weight: 800; color: var(--orange); background: var(--orange-dim); width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(123, 72, 255, 0.2); }
+        .doc-section-title { font-size: 26px; font-weight: 800; color: var(--text); letter-spacing: -0.8px; }
+        .doc-p { font-size: 15px; color: #a1a1aa; margin-bottom: 18px; line-height: 1.8; }
+        .doc-h3 { font-size: 17px; font-weight: 700; color: var(--text); margin: 34px 0 14px; display: flex; align-items: center; gap: 10px; }
+        .doc-h3::before { content: ''; width: 4px; height: 18px; background: var(--orange); border-radius: 4px; flex-shrink: 0; }
+        .doc-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin: 24px 0; }
+        .doc-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; transition: all 0.2s; }
+        .doc-card:hover { border-color: var(--orange); transform: translateY(-2px); }
+        .doc-card-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+        .doc-card-sub { font-size: 13px; color: var(--muted); line-height: 1.55; }
+        .doc-table-wrap { border-radius: 14px; overflow: hidden; border: 1px solid var(--border); margin: 20px 0 28px; overflow-x: auto; background: var(--surface); }
+        .doc-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .doc-table th { background: #161618; color: var(--orange); font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; padding: 16px 20px; text-align: left; border-bottom: 1px solid var(--border); }
+        .doc-table td { padding: 14px 20px; color: #a1a1aa; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .doc-table tr:last-child td { border-bottom: none; }
+        .doc-table tr:hover td { background: rgba(255, 255, 255, 0.02); color: var(--text); }
+        .doc-info { background: var(--orange-dim); border: 1px solid rgba(123, 72, 255, 0.2); border-left: 4px solid var(--orange); border-radius: 12px; padding: 18px 22px; margin: 22px 0; font-size: 14.5px; color: #d1d5db; line-height: 1.6; }
+        .doc-info strong { color: var(--text); }
+        .doc-list { list-style: none; margin: 16px 0 18px; }
+        .doc-list li { display: flex; align-items: center; gap: 12px; padding: 8px 0; font-size: 14.5px; color: #a1a1aa; }
+        .doc-list li::before { content: ''; width: 6px; height: 6px; background: var(--orange); border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 8px var(--orange); }
+        .doc-code-wrap { border-radius: 14px; overflow: hidden; border: 1px solid var(--border2); margin: 20px 0; background: #000; }
+        .doc-code-header { background: #161618; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+        .doc-code-lang { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); }
+        .doc-pre { background: #000; padding: 22px; overflow-x: auto; font-size: 13.5px; line-height: 1.7; }
+        .doc-pre code { font-family: 'JetBrains Mono', 'Fira Code', monospace; color: #e4e4e7; }
+        .doc-inline { background: var(--surface2); border: 1px solid var(--border2); border-radius: 6px; padding: 2px 7px; font-size: 13px; font-family: monospace; color: var(--orange); font-weight: 500; }
+        .doc-badge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .doc-badge--orange { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(123, 72, 255, 0.2); }
+        .doc-badge--green { background: rgba(16, 185, 129, 0.1); color: var(--green); border: 1px solid rgba(16, 185, 129, 0.2); }
+        .doc-badge--yellow { background: rgba(245, 158, 11, 0.1); color: var(--yellow); border: 1px solid rgba(245, 158, 11, 0.2); }
+        .doc-badge--muted { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+        .doc-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); z-index: 99; backdrop-filter: blur(4px); }
+        @media (max-width: 900px) {
+          .doc-topbar { display: flex; }
+          .doc-sidebar { transform: translateX(-100%); }
+          .doc-sidebar.open { transform: translateX(0); box-shadow: 20px 0 50px rgba(0,0,0,0.5); }
+          .doc-overlay.open { display: block; }
+          .doc-main { margin-left: 0; max-width: 100%; padding: 100px 24px 80px; }
+        }
+        @media (max-width: 600px) {
+          .doc-hero-title { font-size: 32px; letter-spacing: -1px; }
+          .doc-section-title { font-size: 20px; }
+          .doc-main { padding: 92px 18px 72px; }
+          .doc-hero { margin-bottom: 48px; }
+          .doc-sidebar { width: 85%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="doc-root">
+        <div class="doc-topbar">
+            <span class="doc-topbar-logo">EDAVRO</span>
+            <button class="doc-hamburger" onclick="toggleMenu()" aria-label="Open menu" type="button">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+
+        <div class="doc-overlay" id="overlay" onclick="closeMenu()"></div>
+
+        <aside class="doc-sidebar" id="sidebar">
+            <div class="doc-sidebar-logo">
+                <span class="doc-logo-mark">EDAVRO</span>
+                <span class="doc-logo-sub">React Project Docs</span>
+            </div>
+            <div class="doc-sidebar-version">
+                <span class="doc-version-badge">v1.0</span>
+                <span>React 19 · CRA · Tailwind</span>
+            </div>
+            <nav class="doc-nav">
+                <div class="doc-nav-label">Sections</div>
+                <button class="doc-nav-item active" onclick="scrollToSection('overview')" type="button">
+                    <span class="doc-nav-num">01</span>
+                    <span class="doc-nav-text">Overview</span>
+                </button>
+                <button class="doc-nav-item" onclick="scrollToSection('changes')" type="button">
+                    <span class="doc-nav-num">02</span>
+                    <span class="doc-nav-text">What Changed</span>
+                </button>
+                <button class="doc-nav-item" onclick="scrollToSection('stack')" type="button">
+                    <span class="doc-nav-num">03</span>
+                    <span class="doc-nav-text">Tech Stack</span>
+                </button>
+                <button class="doc-nav-item" onclick="scrollToSection('routes')" type="button">
+                    <span class="doc-nav-num">04</span>
+                    <span class="doc-nav-text">Routes</span>
+                </button>
+                <button class="doc-nav-item" onclick="scrollToSection('structure')" type="button">
+                    <span class="doc-nav-num">05</span>
+                    <span class="doc-nav-text">Structure</span>
+                </button>
+                <button class="doc-nav-item" onclick="scrollToSection('run')" type="button">
+                    <span class="doc-nav-num">06</span>
+                    <span class="doc-nav-text">Run Commands</span>
+                </button>
+                <button class="doc-nav-item" onclick="scrollToSection('pwa')" type="button">
+                    <span class="doc-nav-num">07</span>
+                    <span class="doc-nav-text">PWA Setup</span>
+                </button>
+                <button class="doc-nav-item" onclick="scrollToSection('styling')" type="button">
+                    <span class="doc-nav-num">08</span>
+                    <span class="doc-nav-text">Styling</span>
+                </button>
+                <button class="doc-nav-item" onclick="scrollToSection('forms')" type="button">
+                    <span class="doc-nav-num">09</span>
+                    <span class="doc-nav-text">Forms</span>
+                </button>
+                <button class="doc-nav-item" onclick="scrollToSection('notes')" type="button">
+                    <span class="doc-nav-num">10</span>
+                    <span class="doc-nav-text">Notes</span>
+                </button>
+            </nav>
+        </aside>
+
+        <main class="doc-main">
+            <section class="doc-hero">
+                <div class="doc-hero-eyebrow">Project Analysis</div>
+                <h1 class="doc-hero-title">
+                    EdaVro <span>React</span>
+                    <br />
+                    Documentation
+                </h1>
+                <p class="doc-hero-desc">
+                    This page now matches the current codebase: React 19, react-scripts, React Router v7, Tailwind CSS, PWA helpers, route-grouped pages, and client-side local state flows.
+                </p>
+                <div class="doc-hero-tags">
+                    <span class="doc-hero-tag">React 19</span>
+                    <span class="doc-hero-tag">react-scripts</span>
+                    <span class="doc-hero-tag">React Router v7</span>
+                    <span class="doc-hero-tag">Tailwind CSS</span>
+                    <span class="doc-hero-tag">lucide-react</span>
+                    <span class="doc-hero-tag">PWA</span>
+                    <span class="doc-hero-tag">react-hot-toast</span>
+                    <span class="doc-hero-tag">SweetAlert2 (Swal)</span>
+                    <span class="doc-hero-tag">Local State</span>
+                    <span class="doc-hero-tag">Mobile-first UI</span>
+                </div>
+            </section>
+
+            <section id="overview" class="doc-section">
+                <div class="doc-section-header">
+                    <span class="doc-section-num">01</span>
+                    <h2 class="doc-section-title">Overview</h2>
+                </div>
+                <p class="doc-p">
+                    EdaVro is a mobile-first e-learning platform built with React 19. It features authentication flows, a comprehensive learning dashboard, course management, payment processing, and user support sections. The application is built as a Progressive Web App (PWA) for offline capability and app-like experience.
+                </p>
+                <h3 class="doc-h3">Key Features</h3>
+                <ul class="doc-list">
+                    <li><strong>Authentication:</strong> Sign in, sign up, OTP verification, password reset, profile completion</li>
+                    <li><strong>Dashboard:</strong> Personalized home, course browsing, wishlist, search functionality</li>
+                    <li><strong>Courses:</strong> My courses, free courses, recommended courses, certifications, learning progress tracking</li>
+                    <li><strong>Payments:</strong> Secure payment gateway, card management, multiple payment methods</li>
+                    <li><strong>Support:</strong> Help center, FAQ, live messaging, notifications, preferences</li>
+                    <li><strong>PWA:</strong> Install banner, service worker, offline support, app-like experience</li>
+                </ul>
+                <div class="doc-card-grid">
+                    <div class="doc-card">
+                        <div class="doc-card-title">29+ Pages</div>
+                        <div class="doc-card-sub">Comprehensive pages covering auth, dashboard, courses, payments, profile, support, and legal pages.</div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-card-title">React Router v7</div>
+                        <div class="doc-card-sub">Advanced routing with nested routes, route guards, and programmatic navigation.</div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-card-title">Responsive Design</div>
+                        <div class="doc-card-sub">Mobile-first approach using Tailwind CSS for consistent, adaptive UI across all devices.</div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-card-title">PWA Ready</div>
+                        <div class="doc-card-sub">Service worker registration, install prompts, offline capability, and manifest configuration.</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="changes" class="doc-section">
+                <div class="doc-section-header">
+                    <span class="doc-section-num">02</span>
+                    <h2 class="doc-section-title">Recent Updates (v1.0.0)</h2>
+                </div>
+                <p class="doc-p">
+                    Comprehensive documentation update on April 7, 2026. Complete technical documentation, architecture guides, and changelog now available.
+                </p>
+                <h3 class="doc-h3">Documentation Added</h3>
+                <ul class="doc-list">
+                    <li><strong>README.md:</strong> Enhanced with features, tech stack, setup guides, and deployment options</li>
+                    <li><strong>DOCUMENTATION.md:</strong> Complete technical reference with architecture, routing, API integration, authentication flows</li>
+                    <li><strong>ARCHITECTURE.md:</strong> Deep-dive system architecture, component patterns, data flow diagrams, and scalability</li>
+                    <li><strong>CHANGELOG.md:</strong> Version history, change tracking, and roadmap for future releases</li>
+                </ul>
+                <h3 class="doc-h3">Components Enhanced</h3>
+                <ul class="doc-list">
+                    <li><strong>NotYet.jsx:</strong> AI-designed support page with modern gradient UI, feature preview, roadmap status</li>
+                    <li><strong>DocumentationPage.jsx:</strong> Updated with comprehensive content covering all aspects of the application</li>
+                    <li>All pages now properly integrated with React Router v7 and Tailwind CSS</li>
+                </ul>
+                <h3 class="doc-h3">Technology Stack Updated</h3>
+                <div class="doc-card-grid">
+                    <div class="doc-card">
+                        <div class="doc-card-title">React 19.2.4</div>
+                        <div class="doc-card-sub">Latest React with improved hooks and performance features.</div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-card-title">React Router DOM 7.13.2</div>
+                        <div class="doc-card-sub">Advanced routing with nested routes and layout management.</div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-card-title">Tailwind CSS 3.4.19</div>
+                        <div class="doc-card-sub">Utility-first CSS framework for rapid development.</div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-card-title">Sass 1.98.0</div>
+                        <div class="doc-card-sub">Component-scoped styling with .module.scss pattern.</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="stack" class="doc-section">
+                <div class="doc-section-header">
+                    <span class="doc-section-num">03</span>
+                    <h2 class="doc-section-title">Tech Stack</h2>
+                </div>
+                <p class="doc-p">
+                    Modern, production-ready tech stack optimized for mobile-first e-learning platform with excellent developer experience and performance.
+                </p>
+                <div class="doc-table-wrap">
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Technology</th>
+                                <th>Version</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Framework</td>
+                                <td>React</td>
+                                <td>19.2.4</td>
+                                <td>UI component library with hooks and modern features</td>
+                            </tr>
+                            <tr>
+                                <td>DOM</td>
+                                <td>React DOM</td>
+                                <td>19.2.4</td>
+                                <td>React rendering for web browsers</td>
+                            </tr>
+                            <tr>
+                                <td>Routing</td>
+                                <td>React Router DOM</td>
+                                <td>7.13.2</td>
+                                <td>Client-side routing with nested routes and layout management</td>
+                            </tr>
+                            <tr>
+                                <td>Styling</td>
+                                <td>Tailwind CSS</td>
+                                <td>3.4.19</td>
+                                <td>Utility-first CSS for rapid development</td>
+                            </tr>
+                            <tr>
+                                <td>Styling</td>
+                                <td>Sass/SCSS</td>
+                                <td>1.98.0</td>
+                                <td>Component-scoped styling with .module.scss</td>
+                            </tr>
+                            <tr>
+                                <td>Build Tool</td>
+                                <td>Create React App</td>
+                                <td>5.0.1</td>
+                                <td>Zero-config React app setup with react-scripts</td>
+                            </tr>
+                            <tr>
+                                <td>HTTP Client</td>
+                                <td>Axios</td>
+                                <td>1.14.0</td>
+                                <td>Promise-based HTTP client for API integration</td>
+                            </tr>
+                            <tr>
+                                <td>Icons</td>
+                                <td>Lucide React</td>
+                                <td>1.7.0</td>
+                                <td>Beautiful, consistent SVG icons</td>
+                            </tr>
+                            <tr>
+                                <td>Notifications</td>
+                                <td>React Hot Toast</td>
+                                <td>2.6.0</td>
+                                <td>Lightweight toast notification system</td>
+                            </tr>
+                            <tr>
+                                <td>Alerts</td>
+                                <td>SweetAlert2</td>
+                                <td>11.26.24</td>
+                                <td>Beautiful modal dialogs and confirmations</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="routes" class="doc-section">
+                <div class="doc-section-header">
+                    <span class="doc-section-num">04</span>
+                    <h2 class="doc-section-title">Routing & Navigation</h2>
+                </div>
+                <p class="doc-p">
+                    Routes are centrally defined in <span class="doc-inline">src/routes/AppRoutes.jsx</span> with a clear separation between public and protected routes. The <span class="doc-inline">PrivateRoute</span> component enforces authentication for sensitive areas.
+                </p>
+                <h3 class="doc-h3">Public Routes (No Auth Required)</h3>
+                <div class="doc-table-wrap">
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>Route</th>
+                                <th>Component</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>/</td>
+                                <td>Pwa.jsx</td>
+                                <td>PWA landing page with hero section</td>
+                            </tr>
+                            <tr>
+                                <td>/splash</td>
+                                <td>SplashScreen.jsx</td>
+                                <td>Splash screen on app load</td>
+                            </tr>
+                            <tr>
+                                <td>/auth/signin</td>
+                                <td>SignIn.jsx</td>
+                                <td>User login</td>
+                            </tr>
+                            <tr>
+                                <td>/auth/signup</td>
+                                <td>SignUp.jsx</td>
+                                <td>User registration</td>
+                            </tr>
+                            <tr>
+                                <td>/documentation</td>
+                                <td>DocumentationPage.jsx</td>
+                                <td>In-app documentation</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3 class="doc-h3">Protected Routes (Auth Required - Dashboard)</h3>
+                <div class="doc-table-wrap">
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>Route</th>
+                                <th>Component</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>/dashboard/home</td>
+                                <td>Home.jsx</td>
+                                <td>Main dashboard with courses and recommendations</td>
+                            </tr>
+                            <tr>
+                                <td>/dashboard/search</td>
+                                <td>SearchBar.jsx</td>
+                                <td>Full search interface</td>
+                            </tr>
+                            <tr>
+                                <td>/dashboard/wishlist</td>
+                                <td>Wishlist.jsx</td>
+                                <td>Saved/bookmarked courses</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="structure" class="doc-section">
+                <div class="doc-section-header">
+                    <span class="doc-section-num">05</span>
+                    <h2 class="doc-section-title">Project Structure</h2>
+                </div>
+                <p class="doc-p">
+                    The project uses a feature-based and route-based structure. Shared components go in <span class="doc-inline">components/</span>, while page-level flows belong in <span class="doc-inline">pages/</span> grouped by feature.
+                </p>
+                <div class="doc-code-wrap">
+                    <div class="doc-code-header">
+                        <span class="doc-code-lang">folder tree</span>
+                    </div>
+                    <pre class="doc-pre"><code>edavro-react/
+├── public/
+│   ├── assets/
+│   ├── manifest.json
+│   └── sw.js
+├── src/
+│   ├── App.jsx
+│   ├── components/
+│   ├── pages/
+│   ├── routes/
+│   ├── styles/
+│   └── utils/
+├── package.json
+└── tailwind.config.js</code></pre>
+                </div>
+            </section>
+
+            <section id="run" class="doc-section">
+                <div class="doc-section-header">
+                    <span class="doc-section-num">06</span>
+                    <h2 class="doc-section-title">Getting Started & Commands</h2>
+                </div>
+                <p class="doc-p">
+                    Quick start guide and essential npm commands for development and production.
+                </p>
+                <h3 class="doc-h3">Initial Setup</h3>
+                <div class="doc-code-wrap">
+                    <div class="doc-code-header">
+                        <span class="doc-code-lang">bash</span>
+                    </div>
+                    <pre class="doc-pre"><code>npm install
+npm start
+# Opens at http://localhost:3000</code></pre>
+                </div>
+                <h3 class="doc-h3">Development Commands</h3>
+                <div class="doc-table-wrap">
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>Command</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>npm start</td>
+                                <td>Start dev server with hot reload</td>
+                            </tr>
+                            <tr>
+                                <td>npm test</td>
+                                <td>Run Jest test suite</td>
+                            </tr>
+                            <tr>
+                                <td>npm run build</td>
+                                <td>Create optimized production build</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="pwa" class="doc-section">
+                <div class="doc-section-header">
+                    <span class="doc-section-num">07</span>
+                    <h2 class="doc-section-title">Progressive Web App (PWA)</h2>
+                </div>
+                <p class="doc-p">
+                    EdaVro is built as a Progressive Web App for offline capability, installability, and app-like experience.
+                </p>
+                <h3 class="doc-h3">Key Features</h3>
+                <ul class="doc-list">
+                    <li><strong>Install Prompt:</strong> Smart banner that appears when app is installable</li>
+                    <li><strong>Offline Support:</strong> Service worker caches assets for offline functionality</li>
+                    <li><strong>App Icons:</strong> Custom icons for home screen and dock</li>
+                    <li><strong>Standalone Mode:</strong> Runs as full-screen app without browser UI</li>
+                    <li><strong>Fast Loading:</strong> Service worker pre-caches critical resources</li>
+                </ul>
+            </section>
+
+            <section id="styling" class="doc-section">
+                <div class="doc-section-header">
+                    <span class="doc-section-num">08</span>
+                    <h2 class="doc-section-title">Styling Architecture</h2>
+                </div>
+                <p class="doc-p">
+                    The app uses a hybrid approach: Tailwind CSS for utility-first styling and Sass/SCSS for component-scoped styles.
+                </p>
+                <h3 class="doc-h3">Tailwind CSS Setup</h3>
+                <ul class="doc-list">
+                    <li><strong>Config:</strong> <span class="doc-inline">tailwind.config.js</span> - Customization and theme extension</li>
+                    <li><strong>Stylesheet:</strong> <span class="doc-inline">src/styles/tailwind.css</span> - Base styles and directives</li>
+                    <li><strong>Mobile-first:</strong> Responsive breakpoints for mobile, tablet, desktop</li>
+                </ul>
+                <h3 class="doc-h3">Custom Theme Colors</h3>
+                <div class="doc-card-grid">
+                    <div class="doc-card">
+                        <div class="doc-card-title">Primary Purple</div>
+                        <div class="doc-card-sub">#7F56D9 - Main brand color for buttons and highlights</div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-card-title">Dark Background</div>
+                        <div class="doc-card-sub">#0a0a0b - Main background color</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="forms" class="doc-section">
+                <div class="doc-section-header">
+                    <span class="doc-section-num">09</span>
+                    <h2 class="doc-section-title">Forms & Validation</h2>
+                </div>
+                <p class="doc-p">
+                    Form handling uses React hooks for local state management with client-side validation.
+                </p>
+                <h3 class="doc-h3">Validation Techniques</h3>
+                <ul class="doc-list">
+                    <li><strong>HTML5 Attributes:</strong> required, type, minLength, pattern, min, max</li>
+                    <li><strong>Custom Functions:</strong> validateEmail(), validatePhone(), etc.</li>
+                    <li><strong>State Management:</strong> Track form state and errors in useState hooks</li>
+                    <li><strong>Real-time Feedback:</strong> Show errors as user types or after blur</li>
+                </ul>
+            </section>
+
+            <section id="notes" class="doc-section">
+                <div class="doc-section-header">
+                    <span class="doc-section-num">10</span>
+                    <h2 class="doc-section-title">Integration & Deployment</h2>
+                </div>
+                <p class="doc-p">
+                    Final notes on integrating components, state management, API connections, and deploying to production.
+                </p>
+                <h3 class="doc-h3">Application Architecture</h3>
+                <div class="doc-card-grid">
+                    <div class="doc-card">
+                        <div class="doc-card-title">App.jsx</div>
+                        <div class="doc-card-sub">Root component that mounts PWA helpers, service worker registration, toaster, and the route tree.</div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-card-title">MainLayout</div>
+                        <div class="doc-card-sub">Shared layout component that renders the bottom navbar for dashboard pages through an Outlet.</div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-card-title">PrivateRoute</div>
+                        <div class="doc-card-sub">Route guard that checks authentication before rendering protected pages.</div>
+                    </div>
+                </div>
+                <div class="doc-info">
+                    <strong>Documentation:</strong> For comprehensive guides, see README.md, DOCUMENTATION.md, and ARCHITECTURE.md in the project root.
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const SECTIONS = [
+          { id: 'overview', title: 'Overview', icon: '01' },
+          { id: 'changes', title: 'What Changed', icon: '02' },
+          { id: 'stack', title: 'Tech Stack', icon: '03' },
+          { id: 'routes', title: 'Routes', icon: '04' },
+          { id: 'structure', title: 'Structure', icon: '05' },
+          { id: 'run', title: 'Run Commands', icon: '06' },
+          { id: 'pwa', title: 'PWA Setup', icon: '07' },
+          { id: 'styling', title: 'Styling', icon: '08' },
+          { id: 'forms', title: 'Forms', icon: '09' },
+          { id: 'notes', title: 'Notes', icon: '10' },
+        ];
+
+        let activeSection = 'overview';
+
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('open');
+        }
+
+        function closeMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.remove('open');
+            overlay.classList.remove('open');
+        }
+
+        function scrollToSection(id) {
+            activeSection = id;
+            updateActiveNav();
+            closeMenu();
+
+            const el = document.getElementById(id);
+            if (!el) return;
+
+            const offset = 88;
+            const bodyRect = document.body.getBoundingClientRect().top;
+            const elementRect = el.getBoundingClientRect().top;
+            const elementPosition = elementRect - bodyRect;
+
+            window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
+        }
+
+        function updateActiveNav() {
+            document.querySelectorAll('.doc-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            const activeItems = Array.from(document.querySelectorAll('.doc-nav-item')).filter(item => {
+                const text = item.textContent.trim();
+                const section = SECTIONS.find(s => s.title === text.replace(/^\d+/, '').trim());
+                return section && section.id === activeSection;
+            });
+
+            activeItems.forEach(item => item.classList.add('active'));
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateActiveNav();
+        });
+    </script>
+</body>
+</html>

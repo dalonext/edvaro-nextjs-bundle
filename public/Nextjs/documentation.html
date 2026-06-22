@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eadvro Next.js Documentation</title>
+    <style>
+      :root {
+        --brand: #7b48ff;
+        --brand-dim: rgba(123, 72, 255, 0.12);
+        --dark: #050505;
+        --card: #140f20;
+        --card2: #1a1a1a;
+        --border: #3b3b3b;
+        --text: #e9edf8;
+        --muted: #8b8b8b;
+        --green: #00d261;
+        --blue: #7b48ff;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: #08080b;
+        color: var(--text);
+        line-height: 1.7;
+      }
+      .wrap {
+        display: flex;
+        min-height: 100vh;
+      }
+      .sidebar {
+        width: 280px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        background: var(--card);
+        border-right: 1px solid var(--border);
+        padding: 30px 20px 40px;
+      }
+      .sb-brand {
+        display: grid;
+        gap: 8px;
+        margin-bottom: 30px;
+      }
+      .sb-brand-name {
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--brand);
+      }
+      .sb-brand-ver {
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .sb-section {
+        margin-bottom: 24px;
+      }
+      .sb-section-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+      .sb-link {
+        display: block;
+        padding: 9px 12px;
+        border-radius: 10px;
+        margin-bottom: 4px;
+        font-size: 13px;
+        color: var(--muted);
+        text-decoration: none;
+        transition: all 120ms ease;
+      }
+      .sb-link:hover {
+        background: var(--brand-dim);
+        color: var(--brand);
+      }
+      .sb-link .num {
+        display: inline-block;
+        min-width: 22px;
+        margin-right: 8px;
+        color: var(--text);
+        font-weight: 700;
+      }
+      .main {
+        flex: 1;
+        max-width: 940px;
+        padding: 56px 48px 80px;
+      }
+      .top-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text);
+        text-decoration: none;
+        opacity: 0.8;
+        margin-bottom: 18px;
+      }
+      .top-link:hover {
+        opacity: 1;
+      }
+      .hero {
+        background: linear-gradient(135deg, #10101b 0%, #0b0b12 60%);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: 42px 44px 38px;
+        margin-bottom: 52px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        right: -40px;
+        top: -40px;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, rgba(123,72,255,0.18) 0%, transparent 68%);
+      }
+      .hero h1 {
+        font-size: 3rem;
+        font-weight: 900;
+        max-width: 760px;
+        margin-bottom: 16px;
+      }
+      .hero p {
+        color: var(--muted);
+        font-size: 1.05rem;
+        max-width: 760px;
+        margin-bottom: 24px;
+      }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        color: var(--text);
+        background: rgba(123, 72, 255, 0.12);
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .hero-badge span {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--brand);
+      }
+      .section {
+        margin-bottom: 64px;
+        scroll-margin-top: 24px;
+      }
+      h2 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      h2 .section-num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 34px;
+        height: 34px;
+        border-radius: 12px;
+        background: var(--brand-dim);
+        color: var(--brand);
+        font-size: 0.84rem;
+        font-weight: 800;
+      }
+      h3 {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-top: 24px;
+        margin-bottom: 12px;
+      }
+      p,
+      ul,
+      ol,
+      td,
+      th,
+      code {
+        color: var(--muted);
+      }
+      p {
+        margin-bottom: 16px;
+      }
+      ul,
+      ol {
+        padding-left: 22px;
+        margin-bottom: 16px;
+      }
+      li {
+        margin-bottom: 10px;
+      }
+      a {
+        color: var(--brand);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      pre {
+        background: #0a0b12;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 18px 20px;
+        overflow-x: auto;
+        margin: 16px 0;
+        font-family: "Consolas", "Fira Code", monospace;
+        font-size: 0.88rem;
+        line-height: 1.65;
+        color: #cbd6ff;
+      }
+      code {
+        font-family: "Consolas", "Fira Code", monospace;
+        background: rgba(123, 72, 255, 0.08);
+        padding: 2px 5px;
+        border-radius: 6px;
+      }
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        margin: 18px 0 24px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--card);
+      }
+      th,
+      td {
+        padding: 14px 16px;
+        text-align: left;
+        vertical-align: top;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.92rem;
+      }
+      th {
+        color: var(--brand);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        background: rgba(123, 72, 255, 0.08);
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      .box {
+        border-radius: 14px;
+        padding: 18px 20px;
+        margin: 18px 0;
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+        font-size: 0.94rem;
+      }
+      .box-icon {
+        font-size: 18px;
+      }
+      .box-info {
+        background: rgba(74, 158, 255, 0.08);
+        border: 1px solid rgba(74, 158, 255, 0.2);
+        color: #7ab8f5;
+      }
+      .box-success {
+        background: rgba(0, 210, 97, 0.08);
+        border: 1px solid rgba(0, 210, 97, 0.2);
+        color: #3fb950;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .badge-violet {
+        background: rgba(123, 72, 255, 0.12);
+        color: var(--brand);
+      }
+      .badge-blue {
+        background: rgba(74, 158, 255, 0.12);
+        color: #4a9eff;
+      }
+      .badge-green {
+        background: rgba(0, 210, 97, 0.12);
+        color: var(--green);
+      }
+      @media (max-width: 980px) {
+        .wrap {
+          flex-direction: column;
+        }
+        .sidebar {
+          display: none;
+        }
+        .main {
+          padding: 28px 24px 60px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <aside class="sidebar">
+        <div class="sb-brand">
+          <div class="sb-brand-name">Eadvro</div>
+          <div class="sb-brand-ver">Next.js Documentation</div>
+        </div>
+        <div class="sb-section">
+          <div class="sb-section-label">Contents</div>
+          <a class="sb-link" href="#intro"><span class="num">01</span> Introduction</a>
+          <a class="sb-link" href="#features"><span class="num">02</span> Key Features</a>
+          <a class="sb-link" href="#quickstart"><span class="num">03</span> Quick Start</a>
+          <a class="sb-link" href="#structure"><span class="num">04</span> Folder Structure</a>
+          <a class="sb-link" href="#pages"><span class="num">05</span> All Pages</a>
+          <a class="sb-link" href="#analysis"><span class="num">06</span> Project Analysis</a>
+          <a class="sb-link" href="#flows"><span class="num">07</span> User Flows</a>
+          <a class="sb-link" href="#typography"><span class="num">08</span> Fonts & Typography</a>
+          <a class="sb-link" href="#customise"><span class="num">09</span> Customisation</a>
+          <a class="sb-link" href="#data"><span class="num">10</span> Data & State</a>
+          <a class="sb-link" href="#pwa"><span class="num">11</span> PWA Configuration</a>
+          <a class="sb-link" href="#credits"><span class="num">12</span> Credits & Libraries</a>
+          <a class="sb-link" href="#support"><span class="num">13</span> Support</a>
+        </div>
+      </aside>
+      <main class="main">
+        <a class="top-link" href="https://edavro-next.vercel.app/home">← Back to app</a>
+        <div class="hero">
+          <h1>Edavro</h1>
+          <p>Next.js educational platform — code-verified technical documentation.</p>
+          <div class="hero-grid">
+            <div class="hero-badge"><span></span>Next.js 16</div>
+            <div class="hero-badge"><span></span>React 19</div>
+            <div class="hero-badge"><span></span>TypeScript</div>
+            <div class="hero-badge"><span></span>Tailwind v4</div>
+            <div class="hero-badge"><span></span>PWA</div>
+          </div>
+        </div>
+
+        <section id="intro" class="section">
+          <h2><span class="section-num">01</span> Introduction</h2>
+          <p><strong>Edavro</strong> is a mobile-first educational web app built with <strong>Next.js 16 App Router</strong>, TypeScript, Tailwind CSS 4, and React 19.2.</p>
+          <p>This documentation is generated from real source inspection: routes, stack versions, storage keys, and PWA behavior are aligned with actual code.</p>
+          <div class="table-wrap">
+            <table>
+              <tbody>
+                <tr><td><strong>48</strong></td><td>Pages</td></tr>
+                <tr><td><strong>7</strong></td><td>Layouts</td></tr>
+                <tr><td><strong>6</strong></td><td>Shared Components</td></tr>
+                <tr><td><strong>100%</strong></td><td>TypeScript</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="features" class="section">
+          <h2><span class="section-num">02</span> Key Features</h2>
+          <h3>App Router Architecture</h3>
+          <p>Organized route groups: (root), (auth), (secure-paiges), and (public-paiges).</p>
+          <h3>Authentication Journey</h3>
+          <p>Signup, OTP verify, reset-password, create-new-password, and profile completion flows.</p>
+          <h3>Course Lifecycle</h3>
+          <p>Course discovery, details, enrollment, learning progress, and certification screens.</p>
+          <h3>Payment Workflow</h3>
+          <p>Card management, secure-payment selection, and passcode confirmation routes.</p>
+          <h3>PWA Runtime</h3>
+          <p>Custom service worker caching, install banner logic, and offline fallback route.</p>
+          <h3>Dark Themed UI</h3>
+          <p>Tokenized color system in globals.css with Tailwind v4 @theme variables.</p>
+          <h3>Frontend-Only Data Layer</h3>
+          <p>No centralized API client is committed yet; state is currently handled with localStorage, sessionStorage, and page-level logic.</p>
+          <h3>Install Experience</h3>
+          <p>Cross-platform install handling for Android/Desktop and manual iOS instructions.</p>
+        </section>
+
+        <section id="quickstart" class="section">
+          <h2><span class="section-num">03</span> Quick Start</h2>
+          <h3>Requirements</h3>
+          <ul>
+            <li>Node.js <strong>18.17+</strong></li>
+            <li>npm 9+ or pnpm 8+</li>
+            <li>Git</li>
+          </ul>
+          <h3>Installation</h3>
+          <pre><code>npm install</code></pre>
+          <pre><code>npm run dev</code></pre>
+          <pre><code>http://localhost:3000</code></pre>
+          <h3>Available Scripts</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Script</th><th>Description</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>npm run dev</code></td><td>Start the Next.js dev server</td></tr>
+                <tr><td><code>npm run build</code></td><td>Create the production build</td></tr>
+                <tr><td><code>npm run start</code></td><td>Serve the production build</td></tr>
+                <tr><td><code>npm run lint</code></td><td>Run ESLint checks across the project</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="structure" class="section">
+          <h2><span class="section-num">04</span> Folder Structure</h2>
+          <pre><code>edavro-next/
+src/app/
+src/components/
+src/api/
+public/
+package.json</code></pre>
+        </section>
+
+        <section id="pages" class="section">
+          <h2><span class="section-num">05</span> All Pages (49)</h2>
+          <h3>Core</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Route</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>/</code></td><td>App entry route</td></tr>
+                <tr><td><code>/home</code></td><td>Learner home dashboard</td></tr>
+                <tr><td><code>/courses</code></td><td>Course browsing page</td></tr>
+                <tr><td><code>/search-bar</code></td><td>Search and filtering</td></tr>
+                <tr><td><code>/wishlist</code></td><td>Wishlist management</td></tr>
+                <tr><td><code>/reviews</code></td><td>Reviews and ratings</td></tr>
+                <tr><td><code>/pwa</code></td><td>PWA showcase page</td></tr>
+                <tr><td><code>/splash</code></td><td>Public splash demo</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>Onboarding</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Route</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>/onboarding</code></td><td>Onboarding flow</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>Authentication</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Route</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>/auth/signin</code></td><td>Email and password login form</td></tr>
+                <tr><td><code>/auth/signup</code></td><td>Registration form for new learners</td></tr>
+                <tr><td><code>/auth/reset-password</code></td><td>Reset password request page</td></tr>
+                <tr><td><code>/auth/create-new-password</code></td><td>Set a new password after verification</td></tr>
+                <tr><td><code>/auth/otp-code-verify</code></td><td>OTP code verification screen</td></tr>
+                <tr><td><code>/auth/current-experience-level</code></td><td>Select current learning experience</td></tr>
+                <tr><td><code>/auth/interests</code></td><td>Choose learning interests and topics</td></tr>
+                <tr><td><code>/auth/purpose</code></td><td>Learning goal and purpose selection</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>My Courses</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Route</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>/my-courses</code></td><td>Enrolled course dashboard</td></tr>
+                <tr><td><code>/my-courses/free-courses</code></td><td>Browse free courses available now</td></tr>
+                <tr><td><code>/my-courses/recommended</code></td><td>Recommended courses based on interests</td></tr>
+                <tr><td><code>/my-courses/upcoming-sessions</code></td><td>Live session schedule and reminders</td></tr>
+                <tr><td><code>/my-courses/course-details/[id]</code></td><td>Course details and curriculum overview</td></tr>
+                <tr><td><code>/my-courses/learning-progress/[id]</code></td><td>Track course progress and completion</td></tr>
+                <tr><td><code>/my-courses/milestone</code></td><td>Milestones achieved after start courses</td></tr>
+                <tr><td><code>/my-courses/completed-courses</code></td><td>Courses completed and certificates earned</td></tr>
+                <tr><td><code>/my-courses/certification</code></td><td>Certificates earned after finishing courses</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>Payment</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Route</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>/payment/add-new-card</code></td><td>Add new payment card with validation</td></tr>
+                <tr><td><code>/payment/card/[id]</code></td><td>Manage saved payment cards</td></tr>
+                <tr><td><code>/payment/passcode</code></td><td>Secure passcode input for payments</td></tr>
+                <tr><td><code>/payment/secure-payment/[id]</code></td><td>Checkout experience for course purchases</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>Profile</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Route</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>/profile</code></td><td>User profile overview and settings</td></tr>
+                <tr><td><code>/profile/complete-profile</code></td><td>Complete profile details for learners</td></tr>
+                <tr><td><code>/profile/personal-info</code></td><td>Edit personal information and preferences</td></tr>
+                <tr><td><code>/profile/notification</code></td><td>Notification settings and alerts</td></tr>
+                <tr><td><code>/profile/notifications</code></td><td>Notification history and messages</td></tr>
+                <tr><td><code>/profile/reminder</code></td><td>Learning reminder and scheduling settings</td></tr>
+                <tr><td><code>/profile/subscription</code></td><td>Subscription plan and billing overview</td></tr>
+                <tr><td><code>/profile/privacy-policy</code></td><td>Privacy policy</td></tr>
+                <tr><td><code>/profile/terms-and-conditions</code></td><td>Terms and conditions</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>Support</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Route</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>/support/support</code></td><td>Submit support requests and messages</td></tr>
+                <tr><td><code>/support/faq</code></td><td>Frequently asked questions and troubleshooting</td></tr>
+                <tr><td><code>/support/help-center</code></td><td>Detailed help and documentation articles</td></tr>
+                <tr><td><code>/support/message</code></td><td>Contact support message page</td></tr>
+                <tr><td><code>/support/not-yet</code></td><td>Feature-unavailable fallback with support actions</td></tr>
+                <tr><td><code>/support/language</code></td><td>Language selection and localization</td></tr>
+                <tr><td><code>/support/security</code></td><td>Security and privacy settings</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>Utility</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Route</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>/documentation</code></td><td>Developer documentation page</td></tr>
+                <tr><td><code>/offline</code></td><td>Offline fallback page for PWA</td></tr>
+                <tr><td><code>/not-found</code></td><td>404 page for missing routes</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="analysis" class="section">
+          <h2><span class="section-num">06</span> Project Analysis</h2>
+          <h3>Routing</h3>
+          <p>The app has <strong>48</strong> page routes, grouped by feature domains and visibility scopes using App Router route groups.</p>
+          <h3>Layouts</h3>
+          <p>There are <strong>7</strong> layout files providing shared wrappers for root, auth, onboarding, and secure sub-sections.</p>
+          <h3>State Persistence</h3>
+          <p>Persistent state is primarily handled with <code>localStorage</code> and limited <code>sessionStorage</code> usage, not centralized context providers.</p>
+          <h3>PWA Strategy</h3>
+          <p>Custom <code>public/sw.js</code> is registered from <code>src/components/pwa/ServiceWorkerRegister.tsx</code> and pairs with <code>/offline</code> for fallback navigation.</p>
+          <p>This page intentionally avoids assumptions and only lists what is present in the current codebase.</p>
+        </section>
+
+        <section id="flows" class="section">
+          <h2><span class="section-num">07</span> User Flows</h2>
+          <h3>New User Onboarding</h3>
+          <pre><code>1. /onboarding
+2. /auth/signup
+3. /auth/otp-code-verify
+4. /auth/current-experience-level
+5. /auth/interests
+6. /auth/purpose
+7. /home</code></pre>
+          <h3>Password Recovery</h3>
+          <pre><code>1. /auth/signin
+2. /auth/reset-password
+3. /auth/otp-code-verify
+4. /auth/create-new-password
+5. /auth/signin</code></pre>
+          <h3>Course Purchase</h3>
+          <pre><code>1. /courses
+2. /my-courses/course-details/[id]
+3. /payment/secure-payment/[id]
+4. /payment/passcode
+5. /my-courses/learning-progress/[id]</code></pre>
+          <h3>PWA Install</h3>
+          <pre><code>1. /pwa
+2. beforeinstallprompt
+3. Install banner confirm
+4. Standalone launch</code></pre>
+        </section>
+
+        <section id="typography" class="section">
+          <h2><span class="section-num">08</span> Fonts & Typography</h2>
+          <h3>Primary</h3>
+          <p>Roboto</p>
+          <p>Used for body text, headings, and utility classes throughout the app.</p>
+          <p><code>var(--font-sans)</code></p>
+          <h3>Source</h3>
+          <p>Local Font Files</p>
+          <p>Loaded via <code>src/app/fonts.css</code> using <code>@font-face</code> declarations.</p>
+          <p><code>public/assets/fonts/*.woff2</code></p>
+          <p>Font tokens are defined in <code>src/app/globals.css</code> under <code>@theme</code>, and the Roboto faces are declared in <code>src/app/fonts.css</code>.</p>
+          <h3>Font Sizes</h3>
+          <table>
+            <thead><tr><th>Use</th><th>Size</th></tr></thead>
+            <tbody>
+              <tr><td>Page title</td><td><code>text-5xl / 48px</code></td></tr>
+              <tr><td>Section header</td><td><code>text-3xl / 32px</code></td></tr>
+              <tr><td>Body</td><td><code>text-sm / 14px</code></td></tr>
+              <tr><td>Caption</td><td><code>text-xs / 12px</code></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="customise" class="section">
+          <h2><span class="section-num">09</span> Customisation</h2>
+          <h3>Brand Colour</h3>
+          <p>Change the primary brand colour in <code>src/app/globals.css</code>:</p>
+          <pre><code>/* src/app/globals.css */
+@theme {
+  --color-primary: #7B48FF;  /* purple theme */
+}</code></pre>
+          <h3>Adding a New Page</h3>
+          <ol>
+            <li>Create <code>src/app/your-page/page.tsx</code>.</li>
+            <li>Wrap content in a page-level container and style as needed.</li>
+            <li>Add route-level handling in layout and navigation if required.</li>
+            <li>If API data is required, add a new client in <code>src/api/</code> first, because the folder is currently empty.</li>
+          </ol>
+          <p>Replace mock data with real API calls by wiring a future API client into page components.</p>
+        </section>
+
+        <section id="data" class="section">
+          <h2><span class="section-num">10</span> Data & State</h2>
+          <p>Storage usage is key-based and page-driven. Prefixing is used mainly for auth, onboarding, and PWA keys.</p>
+          <h3>localStorage</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Key</th><th>Type</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td><code>user</code></td><td>JSON string</td><td>Basic logged-in user object</td></tr>
+                <tr><td><code>token</code></td><td>string</td><td>Auth token used for sign-in state</td></tr>
+                <tr><td><code>userEmail</code></td><td>string</td><td>Signup email used for OTP verification</td></tr>
+                <tr><td><code>resetEmail</code></td><td>string</td><td>Email for reset-password flow</td></tr>
+                <tr><td><code>user_level</code></td><td>string</td><td>Selected experience level</td></tr>
+                <tr><td><code>user_interests</code></td><td>JSON[]</td><td>Selected learning interests</td></tr>
+                <tr><td><code>userData</code></td><td>JSON</td><td>Complete profile form data</td></tr>
+                <tr><td><code>user_reminder</code></td><td>JSON</td><td>Reminder settings for study notifications</td></tr>
+                <tr><td><code>edavro-pwa-dismissed</code></td><td>"1"</td><td>Install banner dismissal state</td></tr>
+                <tr><td><code>edavro-pwa-installed</code></td><td>"1"</td><td>Install completion state</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>sessionStorage</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Key</th><th>Type</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td><code>signupActiveLegal</code></td><td>string</td><td>Tracks active legal modal tab in signup page</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>Cookies / Server Session</h3>
+          <p>No direct cookie write/read logic is currently implemented in client code. Session management is not centralized in this repository yet.</p>
+        </section>
+
+        <section id="pwa" class="section">
+          <h2><span class="section-num">11</span> PWA Configuration</h2>
+          <p><code>public/manifest.json</code></p>
+          <p>App metadata, icons, theme color, and shortcuts.</p>
+          <p><code>public/sw.js</code></p>
+          <p>Service worker cache rules for offline support.</p>
+          <p><code>src/app/offline/page.tsx</code></p>
+          <p>Offline fallback page when network is unavailable.</p>
+          <p>Service worker registration runs from <code>src/components/pwa/ServiceWorkerRegister.tsx</code> in <code>src/app/layout.tsx</code>, and install UX is handled by <code>PwaBanner.tsx</code> with localStorage keys <code>edavro-pwa-dismissed</code> and <code>edavro-pwa-installed</code>.</p>
+        </section>
+
+        <section id="credits" class="section">
+          <h2><span class="section-num">12</span> Credits & Libraries</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Library / Resource</th><th>Version</th><th>Used For</th></tr></thead>
+              <tbody>
+                <tr><td>Next.js</td><td>16.2.0</td><td>App Router architecture</td></tr>
+                <tr><td>React</td><td>19.2.4</td><td>Component rendering with use client</td></tr>
+                <tr><td>TypeScript</td><td>5.7.3</td><td>Type checking</td></tr>
+                <tr><td>Tailwind CSS</td><td>v4</td><td>CSS-first configuration via @theme</td></tr>
+                <tr><td>@tailwindcss/postcss</td><td>^4</td><td>Tailwind v4 PostCSS integration</td></tr>
+                <tr><td>Lucide React</td><td>^0.564.0</td><td>Icon set</td></tr>
+                <tr><td>Recharts</td><td>2.15.0</td><td>Interactive charts</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="support" class="section">
+          <h2><span class="section-num">13</span> Support</h2>
+          <p>If you have questions beyond this documentation, use the in-app support section.</p>
+          <p>Before reaching out, please:</p>
+          <ol>
+            <li>Read this documentation thoroughly.</li>
+            <li>Check the browser console for errors.</li>
+            <li>Confirm you are running <code>npm run dev</code>, not opening files directly.</li>
+            <li>Ensure <code>npm install</code> completed without errors.</li>
+          </ol>
+          <div class="box box-info">
+            <span class="box-icon">ℹ</span>
+            <p><strong>Tip:</strong> Missing NEXT_PUBLIC environment variables are the most common issue when integrating a real backend.</p>
+          </div>
+          <p>Edavro v1.0.0 — © 2026. All rights reserved.</p>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

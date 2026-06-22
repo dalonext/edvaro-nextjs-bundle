@@ -1,0 +1,2442 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edavro — LMS Admin Dashboard | Documentation</title>
+    <style>
+      :root {
+        --brand: #7b48ff;
+        --brand-dark: #5c32d1;
+        --brand-light: #b092ff;
+        --brand-bg: #f5f2ff;
+        --danger: #e60909;
+        --success: #00d261;
+        --warning: #ff9900;
+        --info: #007aff;
+        --sidebar: #0d0d0d;
+        --text-primary: #1f1f1f;
+        --text-secondary: #697586;
+        --border: #e8e9f0;
+        --surface: #ffffff;
+        --bg: #f7f7fd;
+        --radius: 10px;
+        --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+        --font-mono: "Cascadia Code", "Fira Code", "Consolas", monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: var(--font);
+        background: var(--bg);
+        color: var(--text-primary);
+        line-height: 1.6;
+      }
+
+      /* ── Layout ── */
+      .wrap {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* ── Sidebar Nav ── */
+      .sidebar {
+        width: 260px;
+        background: var(--sidebar);
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        overflow-y: auto;
+        padding: 32px 0 40px;
+        flex-shrink: 0;
+      }
+
+      .sidebar-logo {
+        padding: 0 24px 28px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        margin-bottom: 16px;
+      }
+      .sidebar-logo .name {
+        font-size: 20px;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: -0.3px;
+      }
+      .sidebar-logo .sub {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.35);
+        margin-top: 2px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+      }
+
+      .nav-group {
+        padding: 8px 0;
+      }
+      .nav-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.25);
+        padding: 12px 24px 6px;
+      }
+      .nav-link {
+        display: block;
+        padding: 9px 24px;
+        color: rgba(255, 255, 255, 0.55);
+        text-decoration: none;
+        font-size: 13.5px;
+        transition: all 0.15s;
+        border-left: 2px solid transparent;
+      }
+      .nav-link:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.05);
+        border-left-color: var(--brand);
+      }
+      .nav-link.active {
+        color: #fff;
+        background: rgba(123, 72, 255, 0.12);
+        border-left-color: var(--brand);
+      }
+
+      /* ── Main ── */
+      .main {
+        margin-left: 260px;
+        flex: 1;
+        padding: 48px 56px;
+        max-width: 1100px;
+      }
+
+      /* ── Page Header ── */
+      .page-header {
+        margin-bottom: 48px;
+        padding-bottom: 32px;
+        border-bottom: 2px solid var(--border);
+      }
+      .badge-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 12px;
+        border-radius: 100px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .badge-brand {
+        background: var(--brand-bg);
+        color: var(--brand);
+      }
+      .badge-dark {
+        background: #1f1f1f;
+        color: #fff;
+      }
+      .badge-green {
+        background: #e6fff1;
+        color: #00a84e;
+      }
+      .badge-orange {
+        background: #fff7e6;
+        color: #cc7700;
+      }
+
+      .page-title {
+        font-size: 38px;
+        font-weight: 800;
+        letter-spacing: -1px;
+        color: var(--text-primary);
+        line-height: 1.1;
+        margin-bottom: 12px;
+      }
+      .page-title span {
+        color: var(--brand);
+      }
+      .page-desc {
+        font-size: 16px;
+        color: var(--text-secondary);
+        max-width: 620px;
+        line-height: 1.7;
+      }
+
+      /* ── Section ── */
+      .section {
+        margin-bottom: 56px;
+        scroll-margin-top: 32px;
+      }
+      .section-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .section-title::before {
+        content: "";
+        display: block;
+        width: 4px;
+        height: 22px;
+        background: var(--brand);
+        border-radius: 2px;
+        flex-shrink: 0;
+      }
+
+      .section-sub {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 24px 0 12px;
+      }
+
+      p {
+        color: var(--text-secondary);
+        margin-bottom: 14px;
+        font-size: 14.5px;
+        line-height: 1.75;
+      }
+      p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* ── Cards Grid ── */
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 14px;
+      }
+      .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px;
+      }
+      .card-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 6px;
+      }
+      .card-body {
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      .stat-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 18px 20px;
+        text-align: center;
+      }
+      .stat-num {
+        font-size: 26px;
+        font-weight: 800;
+        color: var(--brand);
+        line-height: 1;
+      }
+      .stat-label {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-top: 4px;
+      }
+
+      /* ── Table ── */
+      .tbl-wrap {
+        overflow-x: auto;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13.5px;
+      }
+      thead tr {
+        background: var(--brand-bg);
+      }
+      th {
+        text-align: left;
+        padding: 11px 16px;
+        font-size: 11.5px;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+        color: var(--brand);
+        white-space: nowrap;
+      }
+      td {
+        padding: 11px 16px;
+        border-top: 1px solid var(--border);
+        color: var(--text-secondary);
+        vertical-align: top;
+      }
+      td strong {
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+      tr:hover td {
+        background: #fafafa;
+      }
+      .mono {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        background: var(--brand-bg);
+        color: var(--brand);
+        padding: 2px 7px;
+        border-radius: 4px;
+        white-space: nowrap;
+      }
+
+      /* ── Code ── */
+      pre {
+        background: #0d0d0d;
+        border-radius: var(--radius);
+        padding: 20px 22px;
+        overflow-x: auto;
+        margin: 12px 0 20px;
+      }
+      code {
+        font-family: var(--font-mono);
+        font-size: 13px;
+        line-height: 1.7;
+        color: #e2e8f0;
+      }
+      pre .c {
+        color: #7dd3fc;
+      } /* keyword */
+      pre .s {
+        color: #86efac;
+      } /* string */
+      pre .n {
+        color: #fde68a;
+      } /* number/token */
+      pre .cm {
+        color: #64748b;
+      } /* comment */
+
+      .inline-code {
+        font-family: var(--font-mono);
+        font-size: 12.5px;
+        background: var(--brand-bg);
+        color: var(--brand-dark);
+        padding: 2px 7px;
+        border-radius: 4px;
+      }
+
+      /* ── Color swatches ── */
+      .swatch-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 16px 0;
+      }
+      .swatch {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px 12px;
+        min-width: 200px;
+      }
+      .swatch-dot {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        flex-shrink: 0;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+      }
+      .swatch-info .token {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text-primary);
+        font-family: var(--font-mono);
+      }
+      .swatch-info .hex {
+        font-size: 11px;
+        color: var(--text-secondary);
+      }
+
+      /* ── File tree ── */
+      .tree {
+        background: #0d0d0d;
+        border-radius: var(--radius);
+        padding: 22px 24px;
+        font-family: var(--font-mono);
+        font-size: 13px;
+        line-height: 2;
+        color: rgba(255, 255, 255, 0.7);
+        overflow-x: auto;
+      }
+      .tree .dir {
+        color: #7dd3fc;
+      }
+      .tree .file {
+        color: #e2e8f0;
+      }
+      .tree .new {
+        color: #86efac;
+      }
+      .tree .note {
+        color: #64748b;
+        font-style: italic;
+      }
+      .tree .indent1 {
+        padding-left: 20px;
+      }
+      .tree .indent2 {
+        padding-left: 40px;
+      }
+      .tree .indent3 {
+        padding-left: 60px;
+      }
+
+      /* ── Route table ── */
+      .route-badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        font-family: var(--font-mono);
+      }
+      .rb-get {
+        background: #e6fff1;
+        color: #00a84e;
+      }
+      .rb-page {
+        background: var(--brand-bg);
+        color: var(--brand);
+      }
+      .rb-auth {
+        background: #fff0f0;
+        color: var(--danger);
+      }
+      .rb-proto {
+        background: #fff7e6;
+        color: #cc7700;
+      }
+
+      /* ── Steps ── */
+      .steps {
+        counter-reset: step;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .step {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 16px 20px;
+      }
+      .step-num {
+        counter-increment: step;
+        width: 28px;
+        height: 28px;
+        background: var(--brand);
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 800;
+        flex-shrink: 0;
+      }
+      .step-body {
+        flex: 1;
+      }
+      .step-body strong {
+        font-size: 14px;
+        color: var(--text-primary);
+        display: block;
+        margin-bottom: 4px;
+      }
+      .step-body span {
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+
+      /* ── Tags ── */
+      .tag-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 12px 0;
+      }
+      .tag {
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-size: 12.5px;
+        font-weight: 600;
+        background: var(--brand-bg);
+        color: var(--brand-dark);
+        border: 1px solid rgba(123, 72, 255, 0.15);
+      }
+
+      /* ── Notice ── */
+      .notice {
+        border-radius: var(--radius);
+        padding: 14px 18px;
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        margin: 16px 0;
+        font-size: 13.5px;
+      }
+      .notice-info {
+        background: #e6f4ff;
+        border-left: 3px solid var(--info);
+        color: #1a3a5c;
+      }
+      .notice-warn {
+        background: #fff7e6;
+        border-left: 3px solid var(--warning);
+        color: #5a3a00;
+      }
+      .notice-success {
+        background: #e6fff1;
+        border-left: 3px solid var(--success);
+        color: #003b1f;
+      }
+      .notice-icon {
+        font-size: 16px;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+
+      /* ── Footer ── */
+      .footer {
+        margin-left: 260px;
+        background: var(--sidebar);
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 13px;
+        padding: 28px 56px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: gap;
+      }
+      .footer a {
+        color: var(--brand-light);
+        text-decoration: none;
+      }
+
+      @media (max-width: 900px) {
+        .sidebar {
+          display: none;
+        }
+        .main,
+        .footer {
+          margin-left: 0;
+          padding: 32px 20px;
+        }
+        .grid-2,
+        .grid-3,
+        .grid-4 {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ────────────────────── SIDEBAR ────────────────────── -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="name">Edavro</div>
+        <div class="sub">Documentation v1.0</div>
+      </div>
+
+      <nav>
+        <div class="nav-group">
+          <div class="nav-label">Getting Started</div>
+          <a class="nav-link active" href="#intro">Introduction</a>
+          <a class="nav-link" href="#requirements">Requirements</a>
+          <a class="nav-link" href="#installation">Installation</a>
+          <a class="nav-link" href="#folder">Folder Structure</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">Architecture</div>
+          <a class="nav-link" href="#pages">Pages & Routes</a>
+          <a class="nav-link" href="#components">Components</a>
+          <a class="nav-link" href="#state">State Management</a>
+          <a class="nav-link" href="#hooks">Custom Hooks</a>
+          <a class="nav-link" href="#data">Mock Data</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">Design System</div>
+          <a class="nav-link" href="#tokens">Design Tokens</a>
+          <a class="nav-link" href="#typography">Typography</a>
+          <a class="nav-link" href="#colors">Colors</a>
+          <a class="nav-link" href="#darkmode">Dark Mode</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">Packages</div>
+          <a class="nav-link" href="#packages">All Packages</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">Support</div>
+          <a class="nav-link" href="#credits">Credits</a>
+          <a class="nav-link" href="#changelog">Changelog</a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- ────────────────────── MAIN ────────────────────── -->
+    <main class="main">
+      <!-- Page header -->
+      <div class="page-header" id="intro">
+        <div class="badge-row">
+          <span class="badge badge-brand">Next.js 16</span>
+          <span class="badge badge-dark">TypeScript</span>
+          <span class="badge badge-green">Dark Mode</span>
+          <span class="badge badge-orange">Production Ready</span>
+        </div>
+        <h1 class="page-title"><span>Edavro</span> — LMS Admin Dashboard</h1>
+        <p class="page-desc">
+          A fully production-grade Learning Management System admin dashboard
+          built with Next.js 16, React 19, TypeScript, Tailwind CSS 3, and Redux
+          Toolkit. Ships with a complete design system, three-way
+          dark/light/system theme mode, 25 pages, and zero hardcoded colors.
+        </p>
+      </div>
+
+      <!-- ── Overview stats ── -->
+      <div class="grid-4" style="margin-bottom: 48px">
+        <div class="stat-card">
+          <div class="stat-num">25</div>
+          <div class="stat-label">Pages</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">55+</div>
+          <div class="stat-label">Components</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Theme Modes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">0</div>
+          <div class="stat-label">Hardcoded Colors</div>
+        </div>
+      </div>
+
+      <!-- ── Requirements ── -->
+      <section class="section" id="requirements">
+        <h2 class="section-title">Requirements</h2>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Tool</th>
+                <th>Version</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Node.js</strong></td>
+                <td>18.17 or higher</td>
+                <td>LTS recommended</td>
+              </tr>
+              <tr>
+                <td><strong>npm</strong></td>
+                <td>9+ or pnpm 8+</td>
+                <td>Comes with Node</td>
+              </tr>
+              <tr>
+                <td><strong>Next.js</strong></td>
+                <td>16.2.4</td>
+                <td>Included in dependencies</td>
+              </tr>
+              <tr>
+                <td><strong>React</strong></td>
+                <td>19.2.4</td>
+                <td>Included in dependencies</td>
+              </tr>
+              <tr>
+                <td><strong>TypeScript</strong></td>
+                <td>5.x</td>
+                <td>Included in devDependencies</td>
+              </tr>
+              <tr>
+                <td><strong>Browser</strong></td>
+                <td>Chrome 90+, Firefox 88+, Safari 14+, Edge 90+</td>
+                <td>Any modern browser</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── Installation ── -->
+      <section class="section" id="installation">
+        <h2 class="section-title">Installation</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-body">
+              <strong>Extract the zip</strong>
+              <span
+                >Unzip the downloaded file. You will find the
+                <span class="inline-code">edvaro-dashboard-nextjs</span> folder
+                inside.</span
+              >
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-body">
+              <strong>Install dependencies</strong>
+              <span>Open a terminal inside the project folder and run:</span>
+            </div>
+          </div>
+        </div>
+        <pre><code>cd edvaro-dashboard-nextjs
+npm install</code></pre>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-body">
+              <strong>Start the development server</strong>
+            </div>
+          </div>
+        </div>
+        <pre><code>npm run dev</code></pre>
+        <p>
+          Open <span class="inline-code">http://localhost:3000</span> in your
+          browser. The app redirects to
+          <span class="inline-code">/login</span> automatically.
+        </p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-body">
+              <strong>Build for production</strong>
+            </div>
+          </div>
+        </div>
+        <pre><code>npm run build
+npm run start</code></pre>
+        <div class="notice notice-info">
+          <span class="notice-icon">ℹ️</span>
+          <span
+            >This project uses <strong>mock JSON data</strong> — no backend or
+            database is required to run it. All data lives in
+            <span class="inline-code">src/data/*.json</span>.</span
+          >
+        </div>
+      </section>
+
+      <!-- ── Folder Structure ── -->
+      <section class="section" id="folder">
+        <h2 class="section-title">Folder Structure</h2>
+        <div class="tree">
+          <div class="dir">edvaro-dashboard-nextjs/</div>
+          <div class="indent1 dir">├── src/</div>
+          <div class="indent2 dir">
+            ├── app/ <span class="note"># Next.js App Router</span>
+          </div>
+          <div class="indent3 dir">
+            ├── (auth)/
+            <span class="note"># Auth group — no sidebar/topbar</span>
+          </div>
+          <div class="indent3 file">│ ├── login/</div>
+          <div class="indent3 file">│ ├── signup/</div>
+          <div class="indent3 file">│ ├── forgot-password/</div>
+          <div class="indent3 file">│ ├── otp-verification/</div>
+          <div class="indent3 file">│ └── create-password/</div>
+          <div class="indent3 dir">
+            ├── (dashboard)/
+            <span class="note"
+              ># Dashboard group — sidebar + topbar layout</span
+            >
+          </div>
+          <div class="indent3 file">│ ├── dashboard/</div>
+          <div class="indent3 file">│ ├── students/</div>
+          <div class="indent3 file">│ ├── courses/</div>
+          <div class="indent3 file">│ ├── certificates/</div>
+          <div class="indent3 file">│ ├── transactions/</div>
+          <div class="indent3 file">│ ├── chat/</div>
+          <div class="indent3 file">│ ├── wishlist/</div>
+          <div class="indent3 file">│ ├── settings/</div>
+          <div class="indent3 file">│ └── help/</div>
+          <div class="indent3 file">
+            ├── layout.tsx
+            <span class="note"># Root layout with FOUC prevention script</span>
+          </div>
+          <div class="indent2 dir">├── components/</div>
+          <div class="indent3 dir">
+            ├── ui/ <span class="note"># Primitive UI atoms</span>
+          </div>
+          <div class="indent3 dir">
+            ├── common/ <span class="note"># Shared compound components</span>
+          </div>
+          <div class="indent3 dir">
+            └── features/
+            <span class="note"># Page-level feature components</span>
+          </div>
+          <div class="indent2 dir">
+            ├── data/ <span class="note"># All mock JSON files</span>
+          </div>
+          <div class="indent2 dir">
+            ├── hooks/ <span class="note"># Custom React hooks</span>
+          </div>
+          <div class="indent2 dir">├── shared/</div>
+          <div class="indent3 dir">
+            ├── constant/ <span class="note"># All app constants</span>
+          </div>
+          <div class="indent3 dir">
+            ├── enums/ <span class="note"># TypeScript enums</span>
+          </div>
+          <div class="indent3 dir">
+            ├── icons/ <span class="note"># SVG icon components</span>
+          </div>
+          <div class="indent3 dir">
+            └── types/ <span class="note"># Shared TypeScript types</span>
+          </div>
+          <div class="indent2 dir">
+            ├── store/ <span class="note"># Redux Toolkit store</span>
+          </div>
+          <div class="indent3 dir">
+            └── slices/ <span class="note"># One slice per domain</span>
+          </div>
+          <div class="indent2 dir">└── styles/</div>
+          <div class="indent3 file">
+            └── globals.css
+            <span class="note"># All CSS variables & design tokens</span>
+          </div>
+          <div class="indent1 file">
+            ├── tailwind.config.ts
+            <span class="note"># Tailwind token mapping</span>
+          </div>
+          <div class="indent1 file">
+            ├── middleware.ts <span class="note"># Auth route protection</span>
+          </div>
+          <div class="indent1 file">├── next.config.ts</div>
+          <div class="indent1 file">└── package.json</div>
+        </div>
+      </section>
+
+      <!-- ── Pages & Routes ── -->
+      <section class="section" id="pages">
+        <h2 class="section-title">Pages &amp; Routes</h2>
+
+        <h3 class="section-sub">Auth Pages</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Route</th>
+                <th>File</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="mono">/login</span></td>
+                <td>(auth)/login/page.tsx</td>
+                <td>
+                  Email + password sign-in form with social login buttons
+                  (Google, Facebook, Apple)
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">/signup</span></td>
+                <td>(auth)/signup/page.tsx</td>
+                <td>Account registration form</td>
+              </tr>
+              <tr>
+                <td><span class="mono">/forgot-password</span></td>
+                <td>(auth)/forgot-password/page.tsx</td>
+                <td>Email input to trigger password reset</td>
+              </tr>
+              <tr>
+                <td><span class="mono">/otp-verification</span></td>
+                <td>(auth)/otp-verification/page.tsx</td>
+                <td>6-digit OTP input with countdown resend timer</td>
+              </tr>
+              <tr>
+                <td><span class="mono">/create-password</span></td>
+                <td>(auth)/create-password/page.tsx</td>
+                <td>Set new password after OTP verification</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="section-sub" style="margin-top: 28px">Dashboard Pages</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Route</th>
+                <th>File</th>
+                <th>Features</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="mono">/dashboard</span></td>
+                <td>dashboard/page.tsx</td>
+                <td>
+                  KPI cards, Recharts area chart, geo-location map, top courses
+                  grid, upcoming courses
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">/students</span></td>
+                <td>students/page.tsx</td>
+                <td>
+                  Searchable, sortable, paginated data table with status badges
+                  and action menu
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">/students/add</span></td>
+                <td>students/add/page.tsx</td>
+                <td>
+                  Add student form — general info, address, phone input with
+                  country select
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">/students/[id]</span></td>
+                <td>students/[id]/page.tsx</td>
+                <td>
+                  Student profile view — enrolled courses, bio, contact info
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">/students/[id]/edit</span></td>
+                <td>students/[id]/edit/page.tsx</td>
+                <td>Edit student details form</td>
+              </tr>
+              <tr>
+                <td><span class="mono">/courses</span></td>
+                <td>courses/page.tsx</td>
+                <td>
+                  Course library table, search, status filter, category filter,
+                  wishlist toggle, pagination
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">/courses/add</span></td>
+                <td>courses/add/page.tsx</td>
+                <td>
+                  Add course form — title, category, instructor, thumbnail
+                  upload, modules
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">/courses/[id]</span></td>
+                <td>courses/[id]/page.tsx</td>
+                <td>
+                  Course detail with video player preview, content sidebar,
+                  module list
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">/courses/[id]/edit</span></td>
+                <td>courses/[id]/edit/page.tsx</td>
+                <td>Edit course form</td>
+              </tr>
+              <tr>
+                <td><span class="mono">/transactions</span></td>
+                <td>transactions/page.tsx</td>
+                <td>
+                  Transaction table, date range filter, status filter, export
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">/transactions/add</span></td>
+                <td>transactions/add/page.tsx</td>
+                <td>Record new transaction form</td>
+              </tr>
+              <tr>
+                <td><span class="mono">/transactions/[id]</span></td>
+                <td>transactions/[id]/page.tsx</td>
+                <td>
+                  Transaction detail with Invoice tab (subtotal, tax, discount,
+                  total)
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">/certificates</span></td>
+                <td>certificates/page.tsx</td>
+                <td>Certificates list, search, status filter, pagination</td>
+              </tr>
+              <tr>
+                <td><span class="mono">/certificates/add</span></td>
+                <td>certificates/add/page.tsx</td>
+                <td>
+                  Issue certificate with template selector — generates
+                  downloadable PDF via jsPDF
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">/certificates/[id]</span></td>
+                <td>certificates/[id]/page.tsx</td>
+                <td>
+                  Certificate preview card with gold accents, download PDF
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">/chat</span></td>
+                <td>chat/page.tsx</td>
+                <td>
+                  Conversation list with search + tabs, message bubbles,
+                  rich-text toolbar
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">/wishlist</span></td>
+                <td>wishlist/page.tsx</td>
+                <td>Saved courses grid, remove from wishlist</td>
+              </tr>
+              <tr>
+                <td><span class="mono">/settings</span></td>
+                <td>settings/page.tsx</td>
+                <td>
+                  Profile, password, language, notifications, social links — 5
+                  sections
+                </td>
+              </tr>
+              <tr>
+                <td><span class="mono">/help</span></td>
+                <td>help/page.tsx</td>
+                <td>
+                  Hero search, category grid, FAQ accordion, popular articles,
+                  support form, video tutorials
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── Components ── -->
+      <section class="section" id="components">
+        <h2 class="section-title">Components</h2>
+
+        <h3 class="section-sub">
+          UI Atoms — <span class="inline-code">src/components/ui/</span>
+        </h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>AppButton</strong></td>
+                <td>
+                  7 variants: <span class="mono">primary</span>
+                  <span class="mono">secondary</span>
+                  <span class="mono">outline</span>
+                  <span class="mono">danger</span>
+                  <span class="mono">ghost</span> <span class="mono">edit</span>
+                  <span class="mono">delete</span>. Supports icon, loading
+                  spinner, fullWidth. Built with CVA.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>AppBadge</strong></td>
+                <td>
+                  Status badges with semantic dark-mode-aware colors. Statuses:
+                  active, published, running, complete, success, suspend, push,
+                  cancel, bad, pending, upcoming.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>AppInput</strong></td>
+                <td>
+                  Text input with label, error state, left/right icon slots,
+                  prefix string, password toggle. Dark-mode safe.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>AppSelect</strong></td>
+                <td>Dropdown built on Radix Select with design tokens.</td>
+              </tr>
+              <tr>
+                <td><strong>AppTextarea</strong></td>
+                <td>Multi-line input with label and error state.</td>
+              </tr>
+              <tr>
+                <td><strong>AppCheckbox</strong></td>
+                <td>Radix Checkbox with custom styling.</td>
+              </tr>
+              <tr>
+                <td><strong>AppToggle</strong></td>
+                <td>Switch/toggle component.</td>
+              </tr>
+              <tr>
+                <td><strong>AppAvatar</strong></td>
+                <td>Circular avatar with image fallback to initials.</td>
+              </tr>
+              <tr>
+                <td><strong>AppSkeleton</strong></td>
+                <td>Loading skeleton with card and list variants.</td>
+              </tr>
+              <tr>
+                <td><strong>AppSpinner</strong></td>
+                <td>Animated loading spinner.</td>
+              </tr>
+              <tr>
+                <td><strong>ThemeProvider</strong></td>
+                <td>
+                  Syncs Redux theme state to HTML
+                  <span class="mono">.dark</span> class. Listens for OS
+                  preference changes when on system mode.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="section-sub">
+          Common Components —
+          <span class="inline-code">src/components/common/</span>
+        </h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>PageHeader</strong></td>
+                <td>
+                  Page title (h1), subtitle, and action button slots. Used on
+                  every list page.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Pagination</strong></td>
+                <td>
+                  Page navigator with previous/next, page numbers,
+                  items-per-page selector.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>DataTable</strong></td>
+                <td>
+                  Generic sortable table used across students, courses,
+                  transactions, certificates.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>ActionMenu</strong></td>
+                <td>
+                  Three-dot dropdown menu with edit/delete/view actions. Built
+                  on Radix DropdownMenu.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>ConfirmModal</strong></td>
+                <td>
+                  Delete confirmation dialog with cancel/confirm. Built on Radix
+                  Dialog.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>SearchBar</strong></td>
+                <td>Debounced search input.</td>
+              </tr>
+              <tr>
+                <td><strong>DateRangePicker</strong></td>
+                <td>Date range selection for transaction filtering.</td>
+              </tr>
+              <tr>
+                <td><strong>TabBar</strong></td>
+                <td>Horizontal tab navigation with active indicator.</td>
+              </tr>
+              <tr>
+                <td><strong>StatCard</strong></td>
+                <td>Metric card with label, value, and trend indicator.</td>
+              </tr>
+              <tr>
+                <td><strong>ProgressBar</strong></td>
+                <td>Horizontal progress bar with percentage label.</td>
+              </tr>
+              <tr>
+                <td><strong>CourseCard</strong></td>
+                <td>
+                  Course thumbnail card with wishlist toggle, status badge.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>FileInput</strong></td>
+                <td>Drag-and-drop file upload area.</td>
+              </tr>
+              <tr>
+                <td><strong>FileUpload</strong></td>
+                <td>File upload with preview and remove.</td>
+              </tr>
+              <tr>
+                <td><strong>FormField</strong></td>
+                <td>
+                  Generic form field wrapper with label and error display.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>OTPInput</strong></td>
+                <td>6-box OTP code input with auto-advance.</td>
+              </tr>
+              <tr>
+                <td><strong>PhoneInput</strong></td>
+                <td>Phone number input with country code picker.</td>
+              </tr>
+              <tr>
+                <td><strong>CountrySelect</strong></td>
+                <td>Searchable country dropdown.</td>
+              </tr>
+              <tr>
+                <td><strong>RichTextEditor</strong></td>
+                <td>Basic rich-text editor for course descriptions.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="section-sub">
+          Feature Components —
+          <span class="inline-code">src/components/features/</span>
+        </h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Sidebar</strong></td>
+                <td>
+                  Fixed left navigation. Desktop collapsible, mobile drawer.
+                  Built-in 3-way theme toggle. Active route highlighting.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Topbar</strong></td>
+                <td>
+                  Top header with search, notifications, theme toggle (desktop),
+                  user menu.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>AuthForm</strong></td>
+                <td>
+                  Shared auth page shell with logo, dark background, decorative
+                  elements.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>CourseForm</strong></td>
+                <td>Full course add/edit form with React Hook Form + Zod.</td>
+              </tr>
+              <tr>
+                <td><strong>StudentForm</strong></td>
+                <td>Student add/edit form.</td>
+              </tr>
+              <tr>
+                <td><strong>CertificateForm</strong></td>
+                <td>Certificate issue form with template selector.</td>
+              </tr>
+              <tr>
+                <td><strong>TransactionForm</strong></td>
+                <td>Transaction record form with amount, currency, status.</td>
+              </tr>
+              <tr>
+                <td><strong>ChatPanel</strong></td>
+                <td>Mini chat widget used in the chat page.</td>
+              </tr>
+              <tr>
+                <td><strong>CourseContentSidebar</strong></td>
+                <td>Module/lesson sidebar on the course detail page.</td>
+              </tr>
+              <tr>
+                <td><strong>OrderDetailTabs</strong></td>
+                <td>Info / Invoice tabs on transaction detail page.</td>
+              </tr>
+              <tr>
+                <td><strong>SettingsNav</strong></td>
+                <td>Left navigation panel within the settings page.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="section-sub">
+          Icon Components — <span class="inline-code">src/shared/icons/</span>
+        </h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>GoogleIcon</strong></td>
+                <td>Google brand icon (multi-color, official brand colors)</td>
+              </tr>
+              <tr>
+                <td><strong>FacebookIcon</strong></td>
+                <td>
+                  Facebook brand icon — uses
+                  <span class="mono">currentColor</span>, pass
+                  <span class="mono">text-[#1877F2]</span> to apply brand blue
+                </td>
+              </tr>
+              <tr>
+                <td><strong>AppleIcon</strong></td>
+                <td>Apple logo icon</td>
+              </tr>
+              <tr>
+                <td><strong>CalendarIcon</strong></td>
+                <td>
+                  Calendar SVG — uses <span class="mono">currentColor</span>,
+                  inherits text color
+                </td>
+              </tr>
+              <tr>
+                <td><strong>ChatIcons</strong></td>
+                <td>
+                  Exports: <span class="mono">SendIcon</span>,
+                  <span class="mono">EmojiIcon</span>,
+                  <span class="mono">AttachIcon</span>,
+                  <span class="mono">ImageIcon</span>,
+                  <span class="mono">MicIcon</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Import all icons from the barrel:
+          <span class="inline-code"
+            >import { CalendarIcon } from "@/shared/icons"</span
+          >
+        </p>
+      </section>
+
+      <!-- ── State Management ── -->
+      <section class="section" id="state">
+        <h2 class="section-title">State Management</h2>
+        <p>
+          The project uses <strong>Redux Toolkit</strong> with
+          <strong>redux-persist</strong>. The store is at
+          <span class="inline-code">src/store/index.ts</span>.
+        </p>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Slice</th>
+                <th>State</th>
+                <th>Key actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>uiSlice</strong></td>
+                <td>
+                  theme, sidebarOpen, sidebarCollapsed, mobileMenuOpen,
+                  isMobile, language, notificationSettings
+                </td>
+                <td>
+                  setTheme, setSidebarOpen, setSidebarCollapsed,
+                  setMobileMenuOpen, setIsMobile, setLanguage
+                </td>
+              </tr>
+              <tr>
+                <td><strong>authSlice</strong></td>
+                <td>user, isAuthenticated, token</td>
+                <td>login, logout, setUser</td>
+              </tr>
+              <tr>
+                <td><strong>courseSlice</strong></td>
+                <td>courses list</td>
+                <td>setCourses, addCourse, updateCourse, deleteCourse</td>
+              </tr>
+              <tr>
+                <td><strong>studentSlice</strong></td>
+                <td>students list</td>
+                <td>setStudents, addStudent, updateStudent, deleteStudent</td>
+              </tr>
+              <tr>
+                <td><strong>transactionSlice</strong></td>
+                <td>transactions list</td>
+                <td>setTransactions, addTransaction</td>
+              </tr>
+              <tr>
+                <td><strong>certificateSlice</strong></td>
+                <td>certificates list</td>
+                <td>setCertificates, addCertificate</td>
+              </tr>
+              <tr>
+                <td><strong>chatSlice</strong></td>
+                <td>conversations, activeConversationId</td>
+                <td>setActiveConversation, sendMessage</td>
+              </tr>
+              <tr>
+                <td><strong>wishlistSlice</strong></td>
+                <td>wishlisted course IDs</td>
+                <td>toggleWishlist, setWishlist</td>
+              </tr>
+              <tr>
+                <td><strong>dashboardSlice</strong></td>
+                <td>dashboard metrics cache</td>
+                <td>setMetrics</td>
+              </tr>
+              <tr>
+                <td><strong>notificationSlice</strong></td>
+                <td>notification list</td>
+                <td>addNotification, markRead, clearAll</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="notice notice-info">
+          <span class="notice-icon">ℹ️</span>
+          <span
+            ><strong>Theme persistence:</strong>
+            <span class="inline-code">uiSlice.setTheme</span> writes to
+            <span class="inline-code">localStorage</span> under the key
+            <span class="inline-code">"edavro-theme"</span>. An inline script in
+            <span class="inline-code">layout.tsx</span> reads this key before
+            the first paint to prevent flash of unstyled content (FOUC).</span
+          >
+        </div>
+      </section>
+
+      <!-- ── Custom Hooks ── -->
+      <section class="section" id="hooks">
+        <h2 class="section-title">Custom Hooks</h2>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Hook</th>
+                <th>File</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>useLocalSearch</strong></td>
+                <td>hooks/useLocalSearch.ts</td>
+                <td>
+                  Generic client-side search over any array of objects by key.
+                  Debounced. Used on all list pages.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>usePagination</strong></td>
+                <td>hooks/usePagination.ts</td>
+                <td>
+                  Paginates any array. Returns currentPage, totalPages,
+                  paginated slice, goToPage, nextPage, prevPage.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>useSort</strong></td>
+                <td>hooks/useSort.ts</td>
+                <td>
+                  Sorts any array by a key with asc/desc toggle. Returns sorted
+                  array and sort state.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>useDebounce</strong></td>
+                <td>hooks/useDebounce.ts</td>
+                <td>
+                  Debounces a value by a configurable delay (default 300ms).
+                </td>
+              </tr>
+              <tr>
+                <td><strong>useMediaQuery</strong></td>
+                <td>hooks/useMediaQuery.ts</td>
+                <td>
+                  Returns true/false for a CSS media query string. Used to
+                  detect mobile breakpoint.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>useAuth</strong></td>
+                <td>hooks/useAuth.ts</td>
+                <td>
+                  Auth state helpers — isAuthenticated, user, login, logout.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>useConfirmModal</strong></td>
+                <td>hooks/useConfirmModal.ts</td>
+                <td>
+                  Controls open/close state for the ConfirmModal component.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>useOTPTimer</strong></td>
+                <td>hooks/useOTPTimer.ts</td>
+                <td>
+                  Countdown timer for OTP resend. Returns seconds remaining and
+                  reset function.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>useOnClickOutside</strong></td>
+                <td>hooks/useOnClickOutside.ts</td>
+                <td>
+                  Fires a callback when a click occurs outside a given ref.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>useWishlist</strong></td>
+                <td>hooks/useWishlist.ts</td>
+                <td>
+                  Wraps wishlist Redux actions — returns isWishlisted(id) and
+                  toggleWishlist(id).
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── Mock Data ── -->
+      <section class="section" id="data">
+        <h2 class="section-title">Mock Data</h2>
+        <p>
+          All data is served from static JSON files in
+          <span class="inline-code">src/data/</span>. No API or backend is
+          needed. To connect a real backend, replace JSON imports with API calls
+          in the relevant Redux slice or page.
+        </p>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>File</th>
+                <th>Contains</th>
+                <th>Used by</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="mono">dashboard.json</span></td>
+                <td>
+                  kpi, studentAnalysis, geoLocation, topCourses,
+                  upcomingCourses, promo, admin
+                </td>
+                <td>dashboard/page.tsx</td>
+              </tr>
+              <tr>
+                <td><span class="mono">students.json</span></td>
+                <td>
+                  Student records — id, name, email, phone, designation, status,
+                  courses, avatar
+                </td>
+                <td>students pages, studentSlice</td>
+              </tr>
+              <tr>
+                <td><span class="mono">courses.json</span></td>
+                <td>
+                  Course records — id, title, instructor, category, status,
+                  thumbnail, modules, price
+                </td>
+                <td>courses pages, courseSlice</td>
+              </tr>
+              <tr>
+                <td><span class="mono">transactions.json</span></td>
+                <td>
+                  Transaction records — id, student, course, amount, status,
+                  date, method
+                </td>
+                <td>transactions pages, transactionSlice</td>
+              </tr>
+              <tr>
+                <td><span class="mono">certificates.json</span></td>
+                <td>
+                  Certificate records — id, student, course, issued date,
+                  status, format
+                </td>
+                <td>certificates pages, certificateSlice</td>
+              </tr>
+              <tr>
+                <td><span class="mono">chat.json</span></td>
+                <td>Conversations and messages</td>
+                <td>chat/page.tsx, chatSlice</td>
+              </tr>
+              <tr>
+                <td><span class="mono">settings.json</span></td>
+                <td>Profile, social links, notification preferences</td>
+                <td>settings pages</td>
+              </tr>
+              <tr>
+                <td><span class="mono">wishlist.json</span></td>
+                <td>Initial wishlisted course IDs</td>
+                <td>wishlist/page.tsx, wishlistSlice</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── Design Tokens ── -->
+      <section class="section" id="tokens">
+        <h2 class="section-title">Design Tokens</h2>
+        <p>
+          Every color, spacing token, and typography value is defined as a CSS
+          variable in
+          <span class="inline-code">src/styles/globals.css</span> and mapped to
+          a Tailwind utility in
+          <span class="inline-code">tailwind.config.ts</span>. There are
+          <strong>zero hardcoded hex values</strong> in any component. To
+          re-brand the entire dashboard, update the CSS variables only.
+        </p>
+
+        <h3 class="section-sub">How to Rebrand</h3>
+        <p>
+          Open <span class="inline-code">src/styles/globals.css</span> and
+          change the brand variables under
+          <span class="inline-code">:root</span>:
+        </p>
+        <pre><code><span class="cm">/* Change these 4 values to rebrand the entire dashboard */</span>
+:root {
+  --color-primary:        <span class="n">#743FFE</span>;   <span class="cm">/* buttons, active states */</span>
+  --color-primary-hover:  <span class="n">#7B48FF</span>;   <span class="cm">/* hover, filled buttons */</span>
+  --color-primary-active: <span class="n">#6A3DE8</span>;   <span class="cm">/* pressed state */</span>
+  --color-primary-light:  <span class="n">#b092ff</span>;   <span class="cm">/* subtle tints, accents */</span>
+}</code></pre>
+
+        <div class="notice notice-success">
+          <span class="notice-icon">✅</span>
+          <span
+            >Changing those 4 variables updates buttons, badges, sidebar active
+            states, chart colors, focus rings, gradient headers, and all brand
+            accents across all 25 pages instantly.</span
+          >
+        </div>
+      </section>
+
+      <!-- ── Typography ── -->
+      <section class="section" id="typography">
+        <h2 class="section-title">Typography</h2>
+        <p>
+          Font: <strong>Roboto</strong> (loaded via
+          <span class="inline-code">next/font/google</span>, variable:
+          <span class="inline-code">--font-roboto</span>). All sizes are defined
+          as Tailwind tokens.
+        </p>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>Size</th>
+                <th>Line Height</th>
+                <th>Usage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="mono">text-h1</span></td>
+                <td>48px</td>
+                <td>1.2</td>
+                <td>Hero headings</td>
+              </tr>
+              <tr>
+                <td><span class="mono">text-h2</span></td>
+                <td>40px</td>
+                <td>1.2</td>
+                <td>Section headings</td>
+              </tr>
+              <tr>
+                <td><span class="mono">text-h3</span></td>
+                <td>32px</td>
+                <td>1.3</td>
+                <td>Page-level headings</td>
+              </tr>
+              <tr>
+                <td><span class="mono">text-h4</span></td>
+                <td>24px</td>
+                <td>1.3</td>
+                <td>Card headings, PageHeader title</td>
+              </tr>
+              <tr>
+                <td><span class="mono">text-h5</span></td>
+                <td>20px</td>
+                <td>1.4</td>
+                <td>Sub-section headings</td>
+              </tr>
+              <tr>
+                <td><span class="mono">text-h6</span></td>
+                <td>18px</td>
+                <td>1.4</td>
+                <td>Widget headings</td>
+              </tr>
+              <tr>
+                <td><span class="mono">text-body-xl</span></td>
+                <td>18px</td>
+                <td>1.5</td>
+                <td>Large body copy, settings labels</td>
+              </tr>
+              <tr>
+                <td><span class="mono">text-body-lg</span></td>
+                <td>16px</td>
+                <td>1.6</td>
+                <td>Standard body copy</td>
+              </tr>
+              <tr>
+                <td><span class="mono">text-body-md</span></td>
+                <td>14px</td>
+                <td>1.6</td>
+                <td>Default UI text, table cells, inputs</td>
+              </tr>
+              <tr>
+                <td><span class="mono">text-body-sm</span></td>
+                <td>12px</td>
+                <td>1.6</td>
+                <td>Secondary labels, captions</td>
+              </tr>
+              <tr>
+                <td><span class="mono">text-body-xs</span></td>
+                <td>10px</td>
+                <td>1.4</td>
+                <td>Micro labels, timestamps</td>
+              </tr>
+              <tr>
+                <td><span class="mono">text-body-2xs</span></td>
+                <td>9px</td>
+                <td>1.4</td>
+                <td>Badge counters, notification dots</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── Colors ── -->
+      <section class="section" id="colors">
+        <h2 class="section-title">Color System</h2>
+        <p>
+          Every color token is a CSS variable mapped to a Tailwind class. Both
+          light and dark values are defined. Use Tailwind classes — never raw
+          hex.
+        </p>
+
+        <h3 class="section-sub">Brand</h3>
+        <div class="swatch-grid">
+          <div class="swatch">
+            <div class="swatch-dot" style="background: #743ffe"></div>
+            <div class="swatch-info">
+              <div class="token">primary</div>
+              <div class="hex">#743FFE → bg-primary, text-primary</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-dot" style="background: #7b48ff"></div>
+            <div class="swatch-info">
+              <div class="token">primary-hover</div>
+              <div class="hex">#7B48FF → bg-primary-hover</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-dot" style="background: #6a3de8"></div>
+            <div class="swatch-info">
+              <div class="token">primary-active</div>
+              <div class="hex">#6A3DE8 → bg-primary-active</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-dot" style="background: #b092ff"></div>
+            <div class="swatch-info">
+              <div class="token">primary-light</div>
+              <div class="hex">#b092ff → bg-primary-light</div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="section-sub">Actions</h3>
+        <div class="swatch-grid">
+          <div class="swatch">
+            <div class="swatch-dot" style="background: #e60909"></div>
+            <div class="swatch-info">
+              <div class="token">action-red</div>
+              <div class="hex">#E60909 → bg-action-red, text-action-red</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-dot" style="background: #ff9900"></div>
+            <div class="swatch-info">
+              <div class="token">action-orange</div>
+              <div class="hex">#FF9900 → bg-action-orange</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-dot" style="background: #00d261"></div>
+            <div class="swatch-info">
+              <div class="token">action-green</div>
+              <div class="hex">#00d261 → bg-action-green</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-dot" style="background: #007aff"></div>
+            <div class="swatch-info">
+              <div class="token">action-blue</div>
+              <div class="hex">#007AFF → bg-action-blue</div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="section-sub">Labels (text)</h3>
+        <div class="swatch-grid">
+          <div class="swatch">
+            <div
+              class="swatch-dot"
+              style="background: #1f1f1f; border-color: #ccc"
+            ></div>
+            <div class="swatch-info">
+              <div class="token">label-primary</div>
+              <div class="hex">Headings, main body text</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-dot" style="background: #697586"></div>
+            <div class="swatch-info">
+              <div class="token">label-secondary</div>
+              <div class="hex">Subtitles, captions, placeholders</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div
+              class="swatch-dot"
+              style="background: #ffffff; border-color: #ccc"
+            ></div>
+            <div class="swatch-info">
+              <div class="token">label-tertiary</div>
+              <div class="hex">Text on dark/brand bg</div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="section-sub">Backgrounds</h3>
+        <div class="swatch-grid">
+          <div class="swatch">
+            <div
+              class="swatch-dot"
+              style="background: #ffffff; border-color: #ccc"
+            ></div>
+            <div class="swatch-info">
+              <div class="token">surface</div>
+              <div class="hex">Cards, modals, inputs</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-dot" style="background: #f7f7fd"></div>
+            <div class="swatch-info">
+              <div class="token">bg-tertiary</div>
+              <div class="hex">Page background</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-dot" style="background: #f5f2ff"></div>
+            <div class="swatch-info">
+              <div class="token">dashboard-bg</div>
+              <div class="hex">Dashboard outer wrapper</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-dot" style="background: #0d0d0d"></div>
+            <div class="swatch-info">
+              <div class="token">sidebar-bg</div>
+              <div class="hex">Sidebar background (always dark)</div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="section-sub">Badge Semantic</h3>
+        <div class="swatch-grid">
+          <div class="swatch">
+            <div class="swatch-dot" style="background: #2fff76"></div>
+            <div class="swatch-info">
+              <div class="token">badge-success-bg/fg</div>
+              <div class="hex">active, published, complete</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-dot" style="background: #fee2e2"></div>
+            <div class="swatch-info">
+              <div class="token">badge-danger-bg/fg</div>
+              <div class="hex">suspend, cancel, bad</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-dot" style="background: #f8ff92"></div>
+            <div class="swatch-info">
+              <div class="token">badge-warning-bg/fg</div>
+              <div class="hex">pending, upcoming</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Dark Mode ── -->
+      <section class="section" id="darkmode">
+        <h2 class="section-title">Dark Mode</h2>
+        <p>
+          Three modes are supported: <strong>Light</strong>,
+          <strong>Dark</strong>, and <strong>System</strong> (follows OS
+          preference). The current mode is stored in Redux and persisted to
+          <span class="inline-code">localStorage</span>.
+        </p>
+
+        <div class="grid-3" style="margin: 20px 0">
+          <div class="card">
+            <div class="card-title">🌞 Light</div>
+            <div class="card-body">
+              White surfaces, light purple dashboard backgrounds, dark text.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">🌙 Dark</div>
+            <div class="card-body">
+              Deep navy backgrounds (<span class="inline-code">#0d0f1a</span>),
+              dark card surfaces, light text. All CSS vars swap via
+              <span class="inline-code">.dark</span> class on
+              <span class="inline-code">&lt;html&gt;</span>.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">💻 System</div>
+            <div class="card-body">
+              Reads <span class="inline-code">prefers-color-scheme</span> and
+              updates in real-time if OS preference changes.
+            </div>
+          </div>
+        </div>
+
+        <h3 class="section-sub">How to Switch Theme</h3>
+        <p>
+          <strong>Desktop:</strong> Theme toggle in the Topbar (top-right,
+          sun/moon/monitor icons).
+        </p>
+        <p>
+          <strong>Mobile:</strong> 3-way toggle at the bottom of the Sidebar.
+        </p>
+        <p><strong>Programmatically:</strong></p>
+        <pre><code><span class="c">import</span> { setTheme } <span class="c">from</span> <span class="s">"@/store/slices/uiSlice"</span>;
+<span class="c">import</span> { useAppDispatch } <span class="c">from</span> <span class="s">"@/store/hooks"</span>;
+
+<span class="c">const</span> dispatch = useAppDispatch();
+dispatch(setTheme(<span class="s">"dark"</span>));    <span class="cm">// or "light" or "system"</span></code></pre>
+
+        <div class="notice notice-warn">
+          <span class="notice-icon">⚠️</span>
+          <span
+            ><strong>FOUC prevention:</strong> An inline
+            <span class="inline-code">&lt;script&gt;</span> in
+            <span class="inline-code">src/app/layout.tsx</span> runs before the
+            first paint and applies the correct class. Do not remove this
+            script.</span
+          >
+        </div>
+      </section>
+
+      <!-- ── Packages ── -->
+      <section class="section" id="packages">
+        <h2 class="section-title">All Packages</h2>
+
+        <h3 class="section-sub">Core Framework</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Package</th>
+                <th>Version</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>next</strong></td>
+                <td>16.2.4</td>
+                <td>React framework — App Router, SSR, routing, middleware</td>
+              </tr>
+              <tr>
+                <td><strong>react</strong></td>
+                <td>19.2.4</td>
+                <td>UI library</td>
+              </tr>
+              <tr>
+                <td><strong>react-dom</strong></td>
+                <td>19.2.4</td>
+                <td>React DOM renderer</td>
+              </tr>
+              <tr>
+                <td><strong>typescript</strong></td>
+                <td>^5</td>
+                <td>Static typing</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="section-sub">Styling</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Package</th>
+                <th>Version</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>tailwindcss</strong></td>
+                <td>^3.4.19</td>
+                <td>
+                  Utility-first CSS — all styling via design token classes
+                </td>
+              </tr>
+              <tr>
+                <td><strong>tailwindcss-animate</strong></td>
+                <td>^1.0.7</td>
+                <td>
+                  Tailwind animation utilities (used by shadcn/ui components)
+                </td>
+              </tr>
+              <tr>
+                <td><strong>class-variance-authority (CVA)</strong></td>
+                <td>^0.7.1</td>
+                <td>
+                  Type-safe component variant generation (AppButton, AppBadge)
+                </td>
+              </tr>
+              <tr>
+                <td><strong>clsx</strong></td>
+                <td>^2.1.1</td>
+                <td>Conditional class name merging</td>
+              </tr>
+              <tr>
+                <td><strong>tailwind-merge</strong></td>
+                <td>^3.5.0</td>
+                <td>
+                  Merges conflicting Tailwind classes without duplicates (used
+                  in cn())
+                </td>
+              </tr>
+              <tr>
+                <td><strong>postcss</strong></td>
+                <td>^8.5.14</td>
+                <td>CSS processing pipeline</td>
+              </tr>
+              <tr>
+                <td><strong>autoprefixer</strong></td>
+                <td>^10.5.0</td>
+                <td>Adds vendor prefixes automatically</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="section-sub">UI Primitives (Radix UI)</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Package</th>
+                <th>Version</th>
+                <th>Used for</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>@radix-ui/react-dialog</strong></td>
+                <td>^1.1.15</td>
+                <td>ConfirmModal, Settings dialogs</td>
+              </tr>
+              <tr>
+                <td><strong>@radix-ui/react-dropdown-menu</strong></td>
+                <td>^2.1.16</td>
+                <td>ActionMenu, user dropdown in Topbar</td>
+              </tr>
+              <tr>
+                <td><strong>@radix-ui/react-select</strong></td>
+                <td>^2.2.6</td>
+                <td>AppSelect, CountrySelect</td>
+              </tr>
+              <tr>
+                <td><strong>@radix-ui/react-checkbox</strong></td>
+                <td>^1.3.3</td>
+                <td>AppCheckbox</td>
+              </tr>
+              <tr>
+                <td><strong>@radix-ui/react-switch</strong></td>
+                <td>^1.2.6</td>
+                <td>AppToggle</td>
+              </tr>
+              <tr>
+                <td><strong>@radix-ui/react-tabs</strong></td>
+                <td>^1.1.13</td>
+                <td>TabBar, OrderDetailTabs</td>
+              </tr>
+              <tr>
+                <td><strong>@radix-ui/react-accordion</strong></td>
+                <td>^1.2.12</td>
+                <td>FAQ sections</td>
+              </tr>
+              <tr>
+                <td><strong>@radix-ui/react-tooltip</strong></td>
+                <td>^1.2.8</td>
+                <td>Sidebar collapsed tooltips</td>
+              </tr>
+              <tr>
+                <td><strong>@radix-ui/react-avatar</strong></td>
+                <td>^1.1.11</td>
+                <td>AppAvatar</td>
+              </tr>
+              <tr>
+                <td><strong>@radix-ui/react-label</strong></td>
+                <td>^2.1.8</td>
+                <td>Form labels</td>
+              </tr>
+              <tr>
+                <td><strong>@radix-ui/react-slot</strong></td>
+                <td>^1.2.4</td>
+                <td>Slot utility for polymorphic components</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="section-sub">State Management</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Package</th>
+                <th>Version</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>@reduxjs/toolkit</strong></td>
+                <td>^2.11.2</td>
+                <td>
+                  Redux state management with createSlice, createAsyncThunk
+                </td>
+              </tr>
+              <tr>
+                <td><strong>redux-persist</strong></td>
+                <td>^6.0.0</td>
+                <td>Persists Redux state (auth, theme, UI) to localStorage</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="section-sub">Data Fetching</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Package</th>
+                <th>Version</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>@tanstack/react-query</strong></td>
+                <td>^5.100.9</td>
+                <td>Server state management, caching, async data fetching</td>
+              </tr>
+              <tr>
+                <td><strong>axios</strong></td>
+                <td>^1.16.0</td>
+                <td>HTTP client for API calls</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="section-sub">Forms & Validation</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Package</th>
+                <th>Version</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>react-hook-form</strong></td>
+                <td>^7.75.0</td>
+                <td>
+                  Performant form state management with minimal re-renders
+                </td>
+              </tr>
+              <tr>
+                <td><strong>@hookform/resolvers</strong></td>
+                <td>^5.2.2</td>
+                <td>Bridges react-hook-form with Zod schemas</td>
+              </tr>
+              <tr>
+                <td><strong>zod</strong></td>
+                <td>^4.4.3</td>
+                <td>TypeScript-first schema validation for all forms</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="section-sub">Charts & Visualization</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Package</th>
+                <th>Version</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>recharts</strong></td>
+                <td>^3.8.1</td>
+                <td>
+                  AreaChart on dashboard — student enrollment vs dropout over
+                  time
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="section-sub">PDF & File Handling</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Package</th>
+                <th>Version</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>jspdf</strong></td>
+                <td>^4.2.1</td>
+                <td>
+                  Generates downloadable certificate PDFs on the
+                  certificates/[id] page
+                </td>
+              </tr>
+              <tr>
+                <td><strong>html2canvas</strong></td>
+                <td>^1.4.1</td>
+                <td>Captures certificate card as image for PDF generation</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="section-sub">Icons & Notifications</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Package</th>
+                <th>Version</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>lucide-react</strong></td>
+                <td>^1.14.0</td>
+                <td>
+                  All UI icons — 500+ consistent SVG icons as React components
+                </td>
+              </tr>
+              <tr>
+                <td><strong>sonner</strong></td>
+                <td>^2.0.7</td>
+                <td>
+                  Toast notifications — success, error, loading states across
+                  all pages
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── Credits ── -->
+      <section class="section" id="credits">
+        <h2 class="section-title">Credits</h2>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Resource</th>
+                <th>License</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Next.js — <a href="https://nextjs.org">nextjs.org</a></td>
+                <td>MIT</td>
+              </tr>
+              <tr>
+                <td>
+                  Tailwind CSS —
+                  <a href="https://tailwindcss.com">tailwindcss.com</a>
+                </td>
+                <td>MIT</td>
+              </tr>
+              <tr>
+                <td>
+                  Radix UI — <a href="https://radix-ui.com">radix-ui.com</a>
+                </td>
+                <td>MIT</td>
+              </tr>
+              <tr>
+                <td>
+                  Redux Toolkit —
+                  <a href="https://redux-toolkit.js.org"
+                    >redux-toolkit.js.org</a
+                  >
+                </td>
+                <td>MIT</td>
+              </tr>
+              <tr>
+                <td>
+                  Recharts — <a href="https://recharts.org">recharts.org</a>
+                </td>
+                <td>MIT</td>
+              </tr>
+              <tr>
+                <td>
+                  Lucide Icons — <a href="https://lucide.dev">lucide.dev</a>
+                </td>
+                <td>ISC</td>
+              </tr>
+              <tr>
+                <td>Roboto Font — Google Fonts</td>
+                <td>Apache 2.0</td>
+              </tr>
+              <tr>
+                <td>Course thumbnail images (dashboard)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── Changelog ── -->
+      <section class="section" id="changelog">
+        <h2 class="section-title">Changelog</h2>
+        <div class="card">
+          <div class="card-title">v1.0.0 — Initial Release</div>
+          <div class="card-body" style="margin-top: 10px">
+            <div class="tag-list">
+              <span class="tag">25 pages</span>
+              <span class="tag">55+ components</span>
+              <span class="tag">Dark / Light / System mode</span>
+              <span class="tag">FOUC prevention</span>
+              <span class="tag">Zero hardcoded colors</span>
+              <span class="tag">Full design token system</span>
+              <span class="tag">Mobile responsive</span>
+              <span class="tag">Accessible (skip-nav, aria-labels)</span>
+              <span class="tag">PDF certificate download</span>
+              <span class="tag">Search + sort + pagination</span>
+              <span class="tag">TypeScript strict</span>
+              <span class="tag">Redux persist</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ────────────────────── FOOTER ────────────────────── -->
+    <footer class="footer">
+      <span>Edavro LMS Dashboard — Documentation</span>
+      <span
+        >Built with Next.js 16 · React 19 · Tailwind CSS 3 · TypeScript 5</span
+      >
+    </footer>
+
+    <script>
+      // Highlight active nav link on scroll
+      const links = document.querySelectorAll(".nav-link");
+      const sections = document.querySelectorAll(".section, .page-header");
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const id = entry.target.id;
+              links.forEach((l) => l.classList.remove("active"));
+              const active = document.querySelector(`.nav-link[href="#${id}"]`);
+              if (active) active.classList.add("active");
+            }
+          });
+        },
+        { rootMargin: "-20% 0px -70% 0px" },
+      );
+
+      sections.forEach((s) => observer.observe(s));
+    </script>
+  </body>
+</html>
