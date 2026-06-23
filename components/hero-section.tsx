@@ -33,7 +33,7 @@ export function HeroSection() {
               </a>
             </Button>
             <Button size="lg" variant="outline" className="border-border text-foreground hover:bg-accent" asChild>
-              <a href=" " target="_blank" rel="noopener noreferrer">
+              <a href="https://ui8.net/dalonext-1a4b85/products/edavro--nextjs-education-lms-pwa--admin-dashboard" target="_blank" rel="noopener noreferrer">
                 Purchase Now
               </a>
             </Button>

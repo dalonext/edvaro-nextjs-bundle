@@ -16,7 +16,7 @@ export function Footer() {
             Get Eadvro today and start building a mobile-first education app with PWA support and instructor dashboard features.
           </p>
           <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90" asChild>
-            <a href="https://www.dalonext.com/" target="_blank" rel="noopener noreferrer">
+            <a href="https://ui8.net/dalonext-1a4b85/products/edavro--nextjs-education-lms-pwa--admin-dashboard" target="_blank" rel="noopener noreferrer">
               purchase now
               <ExternalLink className="ml-2 h-4 w-4" />
             </a>
