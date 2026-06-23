@@ -29,7 +29,7 @@ export function Header() {
         </nav>
 
         <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
-          <a href="https://www.dalonext.com/" target="_blank" rel="noopener noreferrer">
+          <a href="https://ui8.net/dalonext-1a4b85/products/edavro--nextjs-education-lms-pwa--admin-dashboard" target="_blank" rel="noopener noreferrer">
             purchase now
             <ExternalLink className="ml-2 h-4 w-4" />
           </a>
